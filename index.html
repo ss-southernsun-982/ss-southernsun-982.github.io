@@ -5,101 +5,528 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Southern Sun</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-  <!-- <div id="particles-js" class="container"> -->
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Left Sidebar -->
-      <aside class="col-lg-3 sidebar">
-        <div class="profile mb-4">
-          <img src="./images/namtn.jpg" alt="Profile" class="profile-img img-fluid rounded-circle">
-        </div>
-
-        <nav class="nav-menu">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Portfolio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
-        </nav>
-
-        <footer class="sidebar-footer mt-auto">
-          <p class="mb-1">Copyright © 2024 by Southern Sun</p>
-          <p class="mb-3">All rights reserved</p>
-
-          <div class="social-links">
-            <a href="#" class="btn btn-link">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="btn btn-link">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="#" class="btn btn-link">
-              <i class="fab fa-vimeo-v"></i>
-            </a>
-            <a href="#" class="btn btn-link">
-              <i class="fab fa-youtube"></i>
-            </a>
-            <a href="#" class="btn btn-link">
-              <i class="fab fa-skype"></i>
-            </a>
+  <div id="particles-js" class="particles-container"></div>
+  <div class="container-fluid p-0">
+    <div class="row g-0">
+      <!-- Sidebar -->
+      <div class="col-lg-3 col-md-4 col-sm-12 sidebar" id="sidebar">
+        <div class="d-flex flex-column h-100">
+          <!-- Add close button for mobile -->
+          <button type="button" class="btn-close d-lg-none align-self-end mt-2 me-2" id="sidebarClose"
+            aria-label="Close"></button>
+          <div class="profile text-center">
+            <img src="images/namtn.jpg" alt="Profile Picture" class="img-fluid rounded-circle mb-3"
+              style="border-radius: 50%;">
           </div>
-        </footer>
-      </aside>
+
+          <nav class="nav flex-column">
+            <a class="nav-link active" href="#" onclick="showContent('home')">Home</a>
+            <a class="nav-link" href="#" onclick="showContent('about')">About</a>
+            <a class="nav-link" href="#" onclick="showContent('services')">Services</a>
+            <a class="nav-link" href="#" onclick="showContent('portfolio')">Portfolio</a>
+            <a class="nav-link" href="#" onclick="showContent('blog')">Blog</a>
+            <a class="nav-link" href="#" onclick="showContent('contact')">Contact</a>
+          </nav>
+
+          <footer class="mt-auto text-center">
+            <p class="small text-muted">&copy; 2024 Southern Sun</p>
+            <div class="social-icons">
+              <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="me-2"><i class="fab fa-vimeo-v"></i></a>
+              <a href="#" class="me-2"><i class="fab fa-youtube"></i></a>
+            </div>
+          </footer>
+        </div>
+      </div>
 
       <!-- Main Content -->
-      <main class="col-lg-9 offset-lg-3 main-content">
-        <div class="d-flex flex-column justify-content-center align-items-center min-vh-100">
-          <h1 class="display-1 fw-bold mb-3">SOUTHERN SUN</h1>
-          <h2 class="h4 text-muted typed-text">
-            <span class="typed"></span>
-          </h2>
+      <div class="col-lg-9 col-md-8 col-sm-12 main-content">
+        <div id="home" class="content active overflow-hidden">
+          <!-- <div class="container-fluid"> -->
+          <div class="row vh-100 align-items-center">
+            <div class="col-12">
+              <h1 class="display-1 fw-bold">SOUTHERN SUN</h1>
+              <p class="subtitle text-muted fs-4">
+                <span class="animated-text"></span>
+                <span class="cursor">|</span>
+              </p>
+            </div>
+          </div>
+          <!-- </div> -->
         </div>
-      </main>
-      <div id="particles-js">
 
+        <div id="about" class="content">
+          <!-- <div class="container-fluid"> -->
+          <div class="row">
+            <!-- About Me Section -->
+            <div class="col-12 mb-5">
+              <h2 class="section-title">ABOUT ME</h2>
+              <p class="lead">
+                My name is David Parker and I am a Web Designer, and I'm very passionate and dedicated to my work.
+                With 3 years experience as a professional Web Designer, I have acquired the skills and knowledge
+                necessary to make your project a success. I enjoy every step of the design process, from discussion
+                and collaboration. Thanks a lot for your attention and your trust!
+              </p>
+            </div>
+
+            <!-- Personal Info Grid -->
+            <div class="col-md-6">
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="label">Name:</span>
+                  <span class="value">David Parker</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Age:</span>
+                  <span class="value">25</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">City:</span>
+                  <span class="value">New York, USA</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Job:</span>
+                  <span class="value">Web Designer</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Phone:</span>
+                  <span class="value">+77 022 155 05 05</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Email:</span>
+                  <span class="value">example@gmail.com</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Website:</span>
+                  <span class="value">www.yourdomain.com</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Freelance:</span>
+                  <span class="value">Available</span>
+                </div>
+              </div>
+              <a href="#" class="btn btn-primary mt-4">Download CV</a>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="col-md-6">
+              <div class="skills-section">
+                <div class="programming-skills mb-5">
+                  <h3>PROGRAMMING SKILLS</h3>
+                  <div class="skill-item">
+                    <span class="skill-name">WordPress</span>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 85%"></div>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <span class="skill-name">Laravel</span>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 95%"></div>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <span class="skill-name">Angular</span>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="language-skills">
+                  <h3>LANGUAGE SKILLS</h3>
+                  <div class="skill-item">
+                    <span class="skill-name">English</span>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 100%"></div>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <span class="skill-name">Arabic</span>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 90%"></div>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <span class="skill-name">Japanese</span>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 80%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timeline Section -->
+            <div class="col-12 mt-5">
+              <h2 class="section-title">TIMELINE</h2>
+              <div class="row">
+                <div class="col-md-6">
+                  <h3>WORKING EXPERIENCE</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <h4>Web Designer</h4>
+                      <p class="date">now</p>
+                    </div>
+                    <div class="timeline-item">
+                      <h4>Behance</h4>
+                      <p>SEO Optimizer</p>
+                      <p class="date">2018-2020</p>
+                    </div>
+                    <div class="timeline-item">
+                      <h4>Colorlib</h4>
+                      <p>Theme Reviewer</p>
+                      <p class="date">2016-2018</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h3>EDUCATIONAL EXPERIENCE</h3>
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <h4>Texas</h4>
+                      <p>Master of Design</p>
+                      <p class="date">2017-2020</p>
+                    </div>
+                    <div class="timeline-item">
+                      <h4>Webster College</h4>
+                      <p>UI/UX Design</p>
+                      <p class="date">2015-2017</p>
+                    </div>
+                    <div class="timeline-item">
+                      <h4>Github Club</h4>
+                      <p>Web Certification</p>
+                      <p class="date">2013-2015</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 mt-5">
+              <h2 class="section-title">TESTIMONIALS</h2>
+              <div class="testimonials-section">
+                <div class="testimonial-item">
+                  <div class="quote-mark">
+                    <i class="fas fa-quote-left"></i>
+                  </div>
+                  <p class="testimonial-text">
+                    Loved the template design, documentation, customizability and the customer support from Marketify
+                    team! I am a
+                    noob in programming with very little knowledge about coding but the Marketify team helped me to
+                    launch my resume
+                    website successfully.
+                  </p>
+                  <div class="testimonial-author">
+                    <img src="images/namtn.jpg" alt="Testimonial Author" class="author-img">
+                    <div class="author-info">
+                      <h4 class="author-name">Ave Smith</h4>
+                      <p class="author-role">Designer</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+        </div>
+
+        <div id="services" class="content">
+          <!-- <div class="container-fluid"> -->
+          <div class="row">
+            <div class="col-12 mb-5">
+              <h2 class="section-title">TOP NOTCH SERVICES</h2>
+            </div>
+
+            <!-- Service Cards Row -->
+            <div class="row g-4">
+              <!-- Creative Design Card -->
+              <div class="col-md-6">
+                <div class="service-card">
+                  <div class="service-icon">
+                    <i class="fas fa-bezier-curve"></i>
+                  </div>
+                  <h3 class="service-title">Creative Design</h3>
+                  <ul class="service-list">
+                    <li>
+                      <i class="fas fa-check-circle"></i>
+                      Figma Design
+                    </li>
+                    <li>
+                      <i class="fas fa-check-circle"></i>
+                      PSD Design
+                    </li>
+                    <li>
+                      <i class="fas fa-check-circle"></i>
+                      Sketch Design
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Web Development Card -->
+              <div class="col-md-6">
+                <div class="service-card">
+                  <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                  </div>
+                  <h3 class="service-title">Web Development</h3>
+                  <ul class="service-list">
+                    <li>
+                      <i class="fas fa-check-circle"></i>
+                      HTML Websites
+                    </li>
+                    <li>
+                      <i class="fas fa-check-circle"></i>
+                      WordPress Websites
+                    </li>
+                    <li>
+                      <i class="fas fa-check-circle"></i>
+                      NFT & AI Websites
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+
+        <div id="portfolio" class="content">
+          <!-- <div class="container-fluid"> -->
+          <div class="row">
+            <div class="col-12 mb-5">
+              <h2 class="section-title">CREATIVE PORTFOLIO</h2>
+
+              <!-- Portfolio Filter -->
+              <div class="portfolio-filter mb-5">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="vimeo">Vimeo</button>
+                <button class="filter-btn" data-filter="youtube">Youtube</button>
+                <button class="filter-btn" data-filter="soundcloud">Soundcloud</button>
+                <button class="filter-btn" data-filter="modalbox">Modalbox</button>
+              </div>
+
+              <!-- Portfolio Grid -->
+              <div class="row g-4 portfolio-grid">
+                <!-- Portfolio Item 1 -->
+                <div class="col-md-6 portfolio-item" data-category="vimeo">
+                  <div class="portfolio-card">
+                    <img src="images/southernsun_logo.png" alt="Portfolio Image" class="img-fluid">
+                    <div class="portfolio-overlay">
+                      <div class="portfolio-info">
+                        <h4>Web Design</h4>
+                        <p>Vimeo</p>
+                        <a href="#" class="portfolio-link">
+                          <i class="fas fa-link"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Portfolio Item 2 -->
+                <div class="col-md-6 portfolio-item" data-category="youtube">
+                  <div class="portfolio-card">
+                    <img src="images/southernsun_logo.png" alt="Portfolio Image" class="img-fluid">
+                    <div class="portfolio-overlay">
+                      <div class="portfolio-info">
+                        <h4>Development</h4>
+                        <p>Youtube</p>
+                        <a href="#" class="portfolio-link">
+                          <i class="fas fa-link"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Portfolio Item 3 -->
+                <div class="col-md-6 portfolio-item" data-category="soundcloud">
+                  <div class="portfolio-card">
+                    <img src="images/southernsun_logo.png" alt="Portfolio Image" class="img-fluid">
+                    <div class="portfolio-overlay">
+                      <div class="portfolio-info">
+                        <h4>Graphic Design</h4>
+                        <p>Soundcloud</p>
+                        <a href="#" class="portfolio-link">
+                          <i class="fas fa-link"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Portfolio Item 4 -->
+                <div class="col-md-6 portfolio-item" data-category="modalbox">
+                  <div class="portfolio-card">
+                    <img src="images/southernsun_logo.png" alt="Portfolio Image" class="img-fluid">
+                    <div class="portfolio-overlay">
+                      <div class="portfolio-info">
+                        <h4>Mobile App</h4>
+                        <p>Modalbox</p>
+                        <a href="#" class="portfolio-link">
+                          <i class="fas fa-link"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+
+        <div id="blog" class="content">
+          <!-- <div class="container-fluid"> -->
+          <div class="row">
+            <div class="col-12 mb-5">
+              <h2 class="section-title">RECENT POSTS</h2>
+
+              <!-- Blog Posts Grid -->
+              <div class="row g-4">
+                <!-- Blog Post 1 -->
+                <div class="col-12">
+                  <article class="blog-card">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="blog-image">
+                          <img src="images/southernsun_logo.png" alt="Blog Post" class="img-fluid">
+                          <div class="blog-date">Dec 25, 2024</div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="blog-content">
+                          <div class="blog-meta">
+                            <span class="blog-author">By <a href="#">Aigars Silcans</a></span>
+                            <span class="blog-category">In <a href="#">Lifestyle</a></span>
+                          </div>
+                          <h3 class="blog-title">
+                            <a href="#">How to Create WordPress Website Using Elementor</a>
+                          </h3>
+                          <a href="#" class="read-more">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+
+                <!-- Blog Post 2 -->
+                <div class="col-12">
+                  <article class="blog-card">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="blog-image">
+                          <img src="images/southernsun_logo.png" alt="Blog Post" class="img-fluid">
+                          <div class="blog-date">Dec 22, 2024</div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="blog-content">
+                          <div class="blog-meta">
+                            <span class="blog-author">By <a href="#">Jessica Parker</a></span>
+                            <span class="blog-category">In <a href="#">Design</a></span>
+                          </div>
+                          <h3 class="blog-title">
+                            <a href="#">Build Interactive Parallax Effects with Tweenmax GSAP</a>
+                          </h3>
+                          <a href="#" class="read-more">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+
+        <div id="contact" class="content">
+          <!-- <div class="container-fluid"> -->
+          <div class="row">
+            <div class="col-12 mb-5">
+              <h2 class="section-title">GET IN TOUCH</h2>
+            </div>
+
+            <!-- Google Map -->
+            <div class="col-12 mb-5">
+              <div class="map-container">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.5894168378!2d106.6256168755977!3d10.766092789382052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752c20b38ebef1%3A0x3b2b00676f86af8a!2zQ2FvIOG7kWMgUXVhbmcgVGjDoWkgLSBRdeG6o24gbMO9IGLhu59pIFNhdmlzdGEsIDExMWIgTMO9IFRow6FuaCBUw7RuZywgVMOibiBUaOG7m2kgSG_DoCwgVMOibiBQaMO6LCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1730604555388!5m2!1svi!2s"
+                  width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+              </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-12">
+              <form class="contact-form">
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Name" required>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input type="email" class="form-control" placeholder="Email" required>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Subject">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group">
+                      <textarea class="form-control" rows="5" placeholder="Message" required></textarea>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
       </div>
     </div>
-    <!-- </div> -->
-    <script src="js/particles-config.js"></script>
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <script>
-      // Initialize Typed.js
-      var typed = new Typed('.typed', {
-        strings: ['Web Developer', 'Odoo Developer', 'Mobile Developer', 'Software Engineer', 'Full Stack Developer', 'Python Developer'],
-        typeSpeed: 100,
-        backSpeed: 60,
-        backDelay: 2000,
-        loop: true,
-        showCursor: true,
-        cursorChar: '|',
-        loopCount: Infinity
-      });
-    </script>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <!-- Custom JS -->
+  <script src="js/particles-config.js"></script>
+  <script src="js/script.js"></script>
+
+  <!-- Add this button right after the body tag -->
+  <button class="menu-btn d-lg-none" id="menuBtn">
+    <span class="hamburger-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
 </body>
 
 </html>

@@ -1,19 +1,19 @@
 particlesJS("particles-js", {
   particles: {
     number: {
-      value: 120, // Số lượng hạt
+      value: 80,
       density: {
         enable: true,
         value_area: 800,
       },
     },
     color: {
-      value: "#333333", // Màu sắc của hạt
+      value: "#333333",
     },
     shape: {
       type: "circle",
       stroke: {
-        width: 0,
+        width: 1,
         color: "#000000",
       },
     },
@@ -39,7 +39,7 @@ particlesJS("particles-js", {
     },
     line_linked: {
       enable: true,
-      distance: 150,
+      distance: 200,
       color: "#333333",
       opacity: 0.4,
       width: 1,
@@ -99,4 +99,94 @@ particlesJS("particles-js", {
     },
   },
   retina_detect: true,
+  fullScreen: {
+    enable: true,
+    zIndex: -1,
+  },
+  responsive: [
+    {
+      breakpoint: 768,
+      options: {
+        particles: {
+          number: {
+            value: 40,
+          },
+        },
+      },
+    },
+  ],
+});
+
+// Improved resize handler
+function reinitializeParticles() {
+  try {
+    if (window.pJSDom && window.pJSDom.length > 0) {
+      // Safely destroy existing instance
+      window.pJSDom[0].pJS.fn.vendors.destroypJS();
+      window.pJSDom = [];
+    }
+    // Reinitialize particles
+    particlesJS("particles-js", {
+      particles: {
+        number: {
+          value: window.innerWidth < 768 ? 40 : 80,
+          density: {
+            enable: true,
+            value_area: 800,
+          },
+        },
+        // ... rest of your particles config ...
+      },
+      retina_detect: true,
+      fullScreen: {
+        enable: true,
+        zIndex: -1,
+      },
+    });
+  } catch (error) {
+    console.log("Particles resize error:", error);
+  }
+}
+
+// Update particles canvas size
+function updateParticlesSize() {
+  try {
+    if (window.pJSDom && window.pJSDom[0]) {
+      const canvas = window.pJSDom[0].pJS.canvas.el;
+      const wrapper = document.getElementById("particles-js");
+
+      if (canvas && wrapper) {
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.width = wrapper.offsetWidth;
+        canvas.height = wrapper.offsetHeight;
+      }
+    }
+  } catch (error) {
+    console.log("Canvas resize error:", error);
+  }
+}
+
+// Debounce function to limit resize calls
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Add event listeners with debouncing
+const debouncedResize = debounce(() => {
+  reinitializeParticles();
+  updateParticlesSize();
+}, 250);
+
+window.addEventListener("resize", debouncedResize);
+document.addEventListener("DOMContentLoaded", () => {
+  updateParticlesSize();
 });
