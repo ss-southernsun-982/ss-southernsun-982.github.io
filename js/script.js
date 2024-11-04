@@ -1,3 +1,36 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const doors = document.querySelector(".doors");
+  const splashScreen = document.getElementById("splash-screen");
+  const mainContent = document.getElementById("main-content");
+
+  // Start with doors closed
+  setTimeout(() => {
+    // Open the doors
+    doors.classList.add("open");
+
+    // Wait for doors to open and loading to complete
+    setTimeout(() => {
+      // Fade out splash screen
+      splashScreen.style.opacity = "0";
+      splashScreen.style.transition = "opacity 0.5s ease";
+
+      // Show main content
+      setTimeout(() => {
+        splashScreen.style.display = "none";
+        mainContent.style.display = "block";
+
+        // Fade in main content
+        mainContent.style.opacity = "0";
+        mainContent.style.transition = "opacity 0.5s ease";
+
+        requestAnimationFrame(() => {
+          mainContent.style.opacity = "1";
+        });
+      }, 500);
+    }, 2500); // Adjust this time to match your loading bar duration
+  }, 500);
+});
+
 function showContent(contentId) {
   const sidebarClose = document.getElementById("sidebarClose");
   // Remove active class from all nav links

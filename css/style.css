@@ -1190,3 +1190,106 @@ textarea.form-control {
   z-index: 1;
   min-height: 100vh;
 }
+
+/* Splash Screen Styles */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Door Styles */
+.doors {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.door {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background-color: var(--background-color);
+  transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.left-door {
+  left: 0;
+  transform-origin: left;
+}
+
+.right-door {
+  right: 0;
+  transform-origin: right;
+}
+
+.doors.open .left-door {
+  transform: perspective(1000px) rotateY(90deg);
+}
+
+.doors.open .right-door {
+  transform: perspective(1000px) rotateY(-90deg);
+}
+
+/* Update splash content styles */
+.splash-content {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards 0.5s;
+}
+
+.loading-bar {
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards 0.8s;
+}
+
+.loading-progress {
+  width: 0;
+  height: 100%;
+  background: var(--primary-color);
+  animation: loading 2s ease forwards;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes loading {
+  to {
+    width: 100%;
+  }
+}
