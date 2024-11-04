@@ -103,10 +103,10 @@ class TextAnimator {
 document.addEventListener("DOMContentLoaded", () => {
   const element = document.querySelector(".animated-text");
   const texts = [
-    "Web Developer",
-    "UI/UX Designer",
-    "Frontend Developer",
-    "Full Stack Developer",
+    "Mobile Developer: Android, Flutter",
+    "Backend Developer: NodeJS, NextJS",
+    "Odoo Developer: Python, JavaScript",
+    "Docker, Nginx",
   ];
 
   const options = {
@@ -196,38 +196,38 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // ... existing code ...
+// document.addEventListener("DOMContentLoaded", function () {
+//   // ... existing code ...
 
-  // Function to update particles height
-  function updateParticlesHeight() {
-    const activeContent = document.querySelector(".content.active");
-    const particlesContainer = document.getElementById("particles-js");
+//   // Function to update particles height
+//   function updateParticlesHeight() {
+//     const activeContent = document.querySelector(".content.active");
+//     const particlesContainer = document.getElementById("particles-js");
 
-    if (activeContent && particlesContainer) {
-      // Get the actual height of the active content
-      const contentHeight = activeContent.offsetHeight;
-      // Get the viewport height
-      const viewportHeight = window.innerHeight;
-      // Use the larger of the two heights
-      const newHeight = Math.max(contentHeight, viewportHeight);
+//     if (activeContent && particlesContainer) {
+//       // Get the actual height of the active content
+//       const contentHeight = activeContent.offsetHeight;
+//       // Get the viewport height
+//       const viewportHeight = window.innerHeight;
+//       // Use the larger of the two heights
+//       const newHeight = Math.max(contentHeight, viewportHeight);
 
-      particlesContainer.style.height = `${newHeight}px`;
-    }
-  }
+//       particlesContainer.style.height = `${newHeight}px`;
+//     }
+//   }
 
-  // Update particles height when content changes
-  const navLinks = document.querySelectorAll(".nav-link");
-  navLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      // Wait for content transition to complete
-      setTimeout(updateParticlesHeight, 100);
-    });
-  });
+//   // Update particles height when content changes
+//   const navLinks = document.querySelectorAll(".nav-link");
+//   navLinks.forEach((link) => {
+//     link.addEventListener("click", () => {
+//       // Wait for content transition to complete
+//       setTimeout(updateParticlesHeight, 100);
+//     });
+//   });
 
-  // Update on window resize
-  window.addEventListener("resize", updateParticlesHeight);
+//   // Update on window resize
+//   window.addEventListener("resize", updateParticlesHeight);
 
-  // Initial update
-  updateParticlesHeight();
-});
+//   // Initial update
+//   updateParticlesHeight();
+// });
