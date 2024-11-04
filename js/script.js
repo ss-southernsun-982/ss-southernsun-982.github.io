@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const texts = [
     "Mobile Developer: Android, Flutter",
     "Backend Developer: NodeJS, NextJS",
+    "Database: PostgreSQL, OracleSQL",
     "Odoo Developer: Python, JavaScript",
     "Docker, Nginx",
   ];
