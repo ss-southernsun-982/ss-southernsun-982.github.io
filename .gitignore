@@ -1,0 +1,5 @@
+.venv/
+graphify-out/
+__pycache__/
+*.pyc
+.DS_Store

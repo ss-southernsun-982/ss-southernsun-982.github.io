@@ -1,0 +1,360 @@
+/* ── Theme Variables ───────────────────────────── */
+:root {
+  --c-bg-main:     #131313;
+  --c-bg-panel:    #0e0e0e;
+  --c-bg-card-lo:  #1c1b1b;
+  --c-bg-card:     #201f1f;
+  --c-bg-card-hi:  #2a2a2a;
+  --c-bg-card-top: #353534;
+  --c-accent:      #00ff00;
+  --c-accent-dim:  #02e600;
+  --c-accent-fg:   #013a00;
+  --c-accent-text: #eaffde;
+  --c-text:        #e5e2e1;
+  --c-text-muted:  #84967c;
+  --c-text-sec:    #98cbff;
+  --c-text-amber:  #ffba20;
+  --c-border:      #3b4b35;
+  --c-scrollbar-track: #0e0e0e;
+  --c-scrollbar-thumb: #2a2a2a;
+  color-scheme: dark;
+}
+html.light {
+  --c-bg-main:     #f0f4ef;
+  --c-bg-panel:    #dde8da;
+  --c-bg-card-lo:  #e4ede1;
+  --c-bg-card:     #d8e5d4;
+  --c-bg-card-hi:  #ccdbc7;
+  --c-bg-card-top: #bfcfba;
+  --c-accent:      #007a00;
+  --c-accent-dim:  #005a00;
+  --c-accent-fg:   #f0f4ef;
+  --c-accent-text: #002200;
+  --c-text:        #1a2218;
+  --c-text-muted:  #4a6244;
+  --c-text-sec:    #1a5276;
+  --c-text-amber:  #7a5000;
+  --c-border:      #8fac88;
+  --c-scrollbar-track: #dde8da;
+  --c-scrollbar-thumb: #a0b89a;
+  color-scheme: light;
+}
+
+/* Smooth transition on theme switch */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, color 0.2s ease,
+              border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ── Override Tailwind arbitrary classes for light mode ─── */
+html.light body                   { background: var(--c-bg-main) !important; color: var(--c-text) !important; }
+html.light header                 { background: var(--c-bg-panel) !important; color: var(--c-accent) !important; }
+html.light aside                  { background: var(--c-bg-panel) !important; color: var(--c-accent) !important; }
+html.light footer                 { background: var(--c-bg-panel) !important; color: var(--c-text-amber) !important; }
+
+html.light .bg-surface-container-lowest { background: var(--c-bg-panel) !important; }
+html.light .bg-surface-container-low    { background: var(--c-bg-card-lo) !important; }
+html.light .bg-surface-container        { background: var(--c-bg-card) !important; }
+html.light .bg-surface-container-high   { background: var(--c-bg-card-hi) !important; }
+html.light .bg-surface-container-highest{ background: var(--c-bg-card-top) !important; }
+
+html.light .text-\[\#00FF00\],
+html.light .text-\[\#00ff00\]     { color: var(--c-accent) !important; }
+html.light .text-\[\#eaffde\]     { color: var(--c-accent-text) !important; }
+html.light .text-\[\#84967c\]     { color: var(--c-text-muted) !important; }
+html.light .text-on-surface       { color: var(--c-text) !important; }
+html.light .text-on-surface-variant { color: var(--c-text-muted) !important; }
+html.light .text-primary-fixed-dim { color: var(--c-accent-dim) !important; }
+html.light .text-primary-container { color: var(--c-accent) !important; }
+html.light .text-secondary        { color: var(--c-text-sec) !important; }
+html.light .text-tertiary-fixed-dim{ color: var(--c-text-amber) !important; }
+html.light .text-outline          { color: var(--c-text-muted) !important; }
+
+html.light .bg-\[\#00ff00\]       { background: var(--c-accent) !important; }
+html.light .bg-\[\#013a00\]       { background: var(--c-accent-fg) !important; }
+html.light .bg-primary-container  { background: var(--c-accent) !important; }
+html.light .text-\[\#013a00\]     { color: var(--c-accent-fg) !important; }
+
+html.light .hover\:bg-\[\#2a2a2a\]:hover    { background: var(--c-bg-card-hi) !important; }
+html.light .hover\:text-\[\#eaffde\]:hover  { color: var(--c-accent-text) !important; }
+html.light .hover\:bg-surface-container-high:hover { background: var(--c-bg-card-hi) !important; }
+html.light .hover\:bg-primary-container:hover { background: var(--c-accent) !important; }
+html.light .hover\:text-on-primary:hover    { color: var(--c-accent-fg) !important; }
+
+html.light .border-primary-container { border-color: var(--c-accent) !important; }
+html.light .border-outline-variant   { border-color: var(--c-border) !important; }
+
+html.light .text-\[\#02e600\]     { color: var(--c-accent-dim) !important; opacity: 0.4; }
+
+html.light ::selection { background: var(--c-accent) !important; color: var(--c-accent-fg) !important; }
+
+/* ── Base ───────────────────────────────────────── */
+body {
+  font-family: 'Fira Code', monospace;
+  cursor: crosshair;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.blink {
+  animation: blinker 1s step-start infinite;
+}
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--c-scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--c-scrollbar-thumb); }
+
+.cli-glow {
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+/* ── Terminal Search Popup ──────────────────────── */
+#terminal-popup {
+  display: none;
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(680px, calc(100vw - 2rem));
+  z-index: 999;
+  background: var(--c-bg-panel);
+  border: 1px solid var(--c-border);
+  box-shadow: 0 0 40px rgba(0,255,0,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  font-family: 'Fira Code', monospace;
+}
+#terminal-popup.open { display: block; }
+
+#terminal-popup .title-bar {
+  background: var(--c-bg-card-lo);
+  padding: 6px 12px;
+  font-size: 10px;
+  color: var(--c-text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--c-bg-card-hi);
+  user-select: none;
+}
+#terminal-popup .title-bar span { color: var(--c-accent); }
+
+#terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--c-bg-card-hi);
+}
+#terminal-input-line .prompt { color: var(--c-accent); font-size: 13px; white-space: nowrap; }
+#terminal-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--c-text);
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  flex: 1;
+  caret-color: var(--c-accent);
+}
+
+#terminal-results {
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+.t-result-item {
+  padding: 8px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-left: 2px solid transparent;
+  transition: background 0.1s;
+}
+.t-result-item:hover, .t-result-item.selected {
+  background: var(--c-bg-card-lo);
+  border-left-color: var(--c-accent);
+}
+.t-result-item .t-section { font-size: 10px; color: var(--c-text-muted); }
+.t-result-item .t-content { font-size: 12px; color: var(--c-text-muted); }
+.t-result-item .t-content mark {
+  background: transparent;
+  color: var(--c-accent);
+  font-weight: bold;
+}
+#terminal-footer {
+  padding: 5px 14px;
+  font-size: 10px;
+  color: var(--c-border);
+  border-top: 1px solid var(--c-bg-card-lo);
+  display: flex;
+  gap: 16px;
+}
+#terminal-footer kbd {
+  color: var(--c-text-muted);
+  background: var(--c-bg-card-lo);
+  padding: 0 4px;
+  border: 1px solid var(--c-bg-card-hi);
+}
+
+.search-highlight-active {
+  background: rgba(0,255,0,0.15) !important;
+  outline: 1px solid rgba(0,255,0,0.5);
+}
+
+#terminal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+}
+#terminal-overlay.open { display: block; }
+
+/* ── Login Screen ───────────────────────────────── */
+#login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: #050505;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fira Code', monospace;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#login-screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Scanline overlay */
+#login-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+#login-boot-log {
+  width: min(700px, 92vw);
+  height: 200px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 2;
+}
+#login-boot-log .log-line {
+  font-size: 11px;
+  color: #4a7a4a;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+#login-boot-log .log-line.ok   { color: #00c800; }
+#login-boot-log .log-line.warn { color: #c8a000; }
+#login-boot-log .log-line.info { color: #4a7a4a; }
+
+#login-panel {
+  width: min(480px, 92vw);
+  border: 1px solid #1a3a1a;
+  background: #080808;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+}
+#login-panel-header {
+  background: #0e200e;
+  padding: 8px 16px;
+  font-size: 11px;
+  color: #00ff00;
+  border-bottom: 1px solid #1a3a1a;
+  display: flex;
+  justify-content: space-between;
+}
+#login-panel-header span { color: #4a7a4a; }
+
+#login-panel-body {
+  padding: 24px 20px 20px;
+}
+
+.login-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.login-label {
+  color: #00ff00;
+  width: 120px;
+  flex-shrink: 0;
+}
+.login-value {
+  color: #eaffde;
+}
+
+#login-password-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+#login-password-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #1a3a1a;
+  outline: none;
+  color: #00ff00;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  width: 180px;
+  caret-color: #00ff00;
+  letter-spacing: 0.15em;
+}
+#login-password-input::placeholder { color: #2a4a2a; letter-spacing: 0; }
+
+#login-status {
+  font-size: 11px;
+  color: #4a7a4a;
+  margin-bottom: 16px;
+  min-height: 16px;
+}
+#login-status.error { color: #ff4444; }
+#login-status.success { color: #00ff00; }
+
+#login-btn {
+  background: #00ff00;
+  color: #013a00;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 6px 20px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background 0.1s, color 0.1s;
+}
+#login-btn:hover { background: #02e600; }
+
+#login-panel-footer {
+  padding: 8px 16px;
+  font-size: 10px;
+  color: #1a3a1a;
+  border-top: 1px solid #0e200e;
+}
