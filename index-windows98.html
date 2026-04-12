@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Truong Nhat Nam — Portfolio (Windows 98)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --win-grey:       #c0c0c0;
+      --win-white:      #ffffff;
+      --win-dark-grey:  #808080;
+      --win-black:      #000000;
+      --win-blue-start: #000080;
+      --win-blue-end:   #1084d0;
+      --desktop-teal:   #008080;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      background-color: var(--desktop-teal);
+      height: 100vh; width: 100vw;
+      overflow: hidden;
+      font-size: 11px;
+      user-select: none;
+    }
+
+    /* ── Win98 primitives ── */
+    .w-outset {
+      border: 2px solid;
+      border-top-color: var(--win-white);
+      border-left-color: var(--win-white);
+      border-right-color: var(--win-dark-grey);
+      border-bottom-color: var(--win-dark-grey);
+    }
+
+    .w-inset {
+      border: 2px solid;
+      border-top-color: var(--win-dark-grey);
+      border-left-color: var(--win-dark-grey);
+      border-right-color: var(--win-white);
+      border-bottom-color: var(--win-white);
+      background: var(--win-white);
+    }
+
+    .w-btn {
+      background: var(--win-grey);
+      border: 1px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-white), inset -1px -1px var(--win-dark-grey);
+      padding: 3px 10px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .w-btn:active {
+      box-shadow: inset 1px 1px var(--win-dark-grey), inset -1px -1px var(--win-white);
+      padding: 4px 9px 2px 11px;
+    }
+
+    /* ── Window ── */
+    .win {
+      position: absolute;
+      background: var(--win-grey);
+      border: 1px solid var(--win-black);
+      border-top-color: #dfdfdf;
+      border-left-color: #dfdfdf;
+      box-shadow: 1px 1px 0 var(--win-black);
+      padding: 3px;
+      display: flex;
+      flex-direction: column;
+      min-width: 160px;
+    }
+
+    .win.hidden { display: none !important; }
+
+    .win-titlebar {
+      background: linear-gradient(90deg, var(--win-blue-start), var(--win-blue-end));
+      padding: 3px 2px 3px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .win-titlebar.inactive {
+      background: linear-gradient(90deg, #7b7b7b, #a8a8a8);
+    }
+
+    .win-title {
+      color: white;
+      font-weight: bold;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .win-controls { display: flex; gap: 2px; }
+
+    .ctrl-btn {
+      width: 16px; height: 14px;
+      background: var(--win-grey);
+      border: 1px solid var(--win-black);
+      box-shadow: inset 1px 1px #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: bold;
+      cursor: pointer; font-family: 'Marlett', 'Wingdings', monospace;
+    }
+    .ctrl-btn:active { box-shadow: inset 1px 1px var(--win-dark-grey); }
+
+    .win-body {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scrollable {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--win-grey) var(--win-white);
+    }
+
+    /* ── Tabs ── */
+    .tab-bar {
+      display: flex;
+      gap: 2px;
+      padding: 4px 4px 0;
+      background: var(--win-grey);
+      border-bottom: 2px solid var(--win-dark-grey);
+    }
+
+    .tab {
+      padding: 3px 10px;
+      background: var(--win-grey);
+      border: 1px solid var(--win-dark-grey);
+      border-bottom: none;
+      cursor: pointer;
+      font-size: 11px;
+      position: relative;
+      top: 2px;
+    }
+
+    .tab.active {
+      background: var(--win-white);
+      border-top-color: var(--win-white);
+      border-left-color: var(--win-white);
+      font-weight: bold;
+      z-index: 1;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Progress bar ── */
+    .skill-bar-wrap {
+      height: 12px;
+      background: var(--win-white);
+      border: 1px inset var(--win-dark-grey);
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      background: repeating-linear-gradient(90deg, #000080 0px, #000080 8px, #1084d0 8px, #1084d0 16px);
+    }
+
+    /* ── Desktop icons ── */
+    .desktop-icon {
+      width: 72px;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 6px 4px;
+      cursor: pointer;
+      color: white;
+      text-shadow: 1px 1px var(--win-black);
+      text-align: center;
+      font-size: 11px;
+    }
+    .desktop-icon:hover { background: rgba(0,0,128,0.45); }
+    .desktop-icon .material-symbols-outlined {
+      font-size: 30px; margin-bottom: 4px; color: #fff;
+    }
+
+    /* ── Taskbar ── */
+    .taskbar {
+      background: var(--win-grey);
+      border-top: 2px solid var(--win-white);
+      height: 30px;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 9999;
+      display: flex; align-items: center;
+      padding: 2px 4px; gap: 2px;
+    }
+
+    .start-btn {
+      height: 22px; padding: 0 6px;
+      display: flex; align-items: center; gap: 4px;
+      font-weight: bold; font-size: 12px;
+    }
+
+    .taskbar-item {
+      height: 22px; min-width: 110px; max-width: 150px;
+      padding: 0 6px;
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; cursor: pointer; overflow: hidden;
+      white-space: nowrap; text-overflow: ellipsis;
+    }
+
+    .taskbar-item.active {
+      box-shadow: inset 1px 1px var(--win-dark-grey), inset -1px -1px var(--win-white);
+      font-weight: bold;
+    }
+
+    .systray {
+      margin-left: auto; height: 22px; padding: 0 8px;
+      display: flex; align-items: center; gap: 8px;
+      border-top-color: var(--win-dark-grey);
+      border-left-color: var(--win-dark-grey);
+      border-right-color: var(--win-white);
+      border-bottom-color: var(--win-white);
+      border: 2px solid; border-top-color: var(--win-dark-grey); border-left-color: var(--win-dark-grey);
+      border-right-color: var(--win-white); border-bottom-color: var(--win-white);
+    }
+
+    /* ── Start menu ── */
+    #start-menu {
+      display: none;
+      position: fixed; bottom: 30px; left: 0; z-index: 99999;
+      width: 200px;
+      background: var(--win-grey);
+      border: 2px solid var(--win-black);
+      border-top-color: var(--win-white); border-left-color: var(--win-white);
+      box-shadow: 2px 2px 0 var(--win-black);
+      flex-direction: row;
+    }
+    #start-menu.open { display: flex; }
+
+    .start-sidebar {
+      width: 22px;
+      background: linear-gradient(to top, #000080, #808080);
+      display: flex; align-items: flex-end;
+      padding-bottom: 4px;
+    }
+    .start-sidebar span {
+      color: white; font-size: 12px; font-weight: bold;
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      letter-spacing: 2px;
+    }
+
+    .start-items { flex: 1; padding: 4px 0; }
+
+    .start-item {
+      padding: 5px 8px; display: flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 11px;
+    }
+    .start-item:hover { background: var(--win-blue-start); color: white; }
+    .start-item .material-symbols-outlined { font-size: 18px; }
+    .start-item hr { border: none; border-top: 1px solid var(--win-dark-grey); margin: 3px 0; }
+
+    .start-sep { border-top: 1px solid var(--win-dark-grey); margin: 4px 0; }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Desktop Icons ──────────────────────────── -->
+<div style="position:absolute;inset:0;padding:8px;display:flex;flex-direction:column;flex-wrap:wrap;gap:2px;align-content:flex-start;z-index:0;height:calc(100vh - 30px);">
+  <div class="desktop-icon" onclick="openWin('win-about')">
+    <span class="material-symbols-outlined">person</span>
+    About Me
+  </div>
+  <div class="desktop-icon" onclick="openWin('win-exp')">
+    <span class="material-symbols-outlined">work</span>
+    Experience
+  </div>
+  <div class="desktop-icon" onclick="openWin('win-skills')">
+    <span class="material-symbols-outlined">terminal</span>
+    Skill Tree
+  </div>
+  <div class="desktop-icon" onclick="openWin('win-edu')">
+    <span class="material-symbols-outlined">school</span>
+    Education
+  </div>
+  <div class="desktop-icon" onclick="openWin('win-contact')">
+    <span class="material-symbols-outlined">alternate_email</span>
+    Contact
+  </div>
+  <div class="desktop-icon" onclick="window.location.href='index.html'">
+    <span class="material-symbols-outlined">computer</span>
+    Boot Menu
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     WINDOW: About Me
+════════════════════════════════════════════════ -->
+<div class="win" id="win-about" style="top:40px;left:40px;width:300px;">
+  <div class="win-titlebar" id="tb-win-about">
+    <div class="win-title">
+      <span class="material-symbols-outlined" style="font-size:13px;">person</span> About Me
+    </div>
+    <div class="win-controls">
+      <button class="ctrl-btn" onclick="minimizeWin('win-about')">_</button>
+      <button class="ctrl-btn" onclick="maximizeWin('win-about')">□</button>
+      <button class="ctrl-btn" onclick="closeWin('win-about')">×</button>
+    </div>
+  </div>
+  <div class="win-body">
+    <div style="padding:12px;display:flex;flex-direction:column;gap:10px;">
+      <!-- Avatar placeholder -->
+      <div style="display:flex;justify-content:center;">
+        <div class="w-inset" style="padding:8px;display:inline-flex;">
+          <div style="width:80px;height:80px;background:var(--win-blue-start);display:flex;align-items:center;justify-content:center;">
+            <span class="material-symbols-outlined" style="font-size:48px;color:#fff;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 48;">person</span>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-weight:bold;font-size:13px;">Truong Nhat Nam</div>
+        <div style="color:#444;margin-top:2px;">Application Developer</div>
+        <div style="color:var(--win-dark-grey);font-size:10px;margin-top:2px;">Ho Chi Minh City, Vietnam</div>
+      </div>
+      <div class="w-inset scrollable" style="padding:8px;font-size:11px;line-height:1.6;max-height:90px;">
+        Experienced Application Developer passionate about crafting high-performance Android and Web applications.
+        Specialised in mobile ecosystems, Node.js backends, and Odoo ERP integrations.
+        Aspiring to master fullstack development and grow into an IT leadership role.
+      </div>
+      <div style="display:flex;justify-content:center;gap:8px;">
+        <button class="w-btn" onclick="openWin('win-contact')">
+          <span class="material-symbols-outlined" style="font-size:13px;">mail</span> Contact
+        </button>
+        <button class="w-btn" onclick="openWin('win-exp')">
+          <span class="material-symbols-outlined" style="font-size:13px;">work</span> Experience
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     WINDOW: Experience
+════════════════════════════════════════════════ -->
+<div class="win" id="win-exp" style="top:60px;left:360px;width:460px;">
+  <div class="win-titlebar" id="tb-win-exp">
+    <div class="win-title">
+      <span class="material-symbols-outlined" style="font-size:13px;">work</span> Experience.exe
+    </div>
+    <div class="win-controls">
+      <button class="ctrl-btn" onclick="minimizeWin('win-exp')">_</button>
+      <button class="ctrl-btn" onclick="maximizeWin('win-exp')">□</button>
+      <button class="ctrl-btn" onclick="closeWin('win-exp')">×</button>
+    </div>
+  </div>
+  <div class="win-body">
+    <div class="tab-bar">
+      <div class="tab active" onclick="switchTab('exp','nutifood',this)">NUTIFOOD</div>
+      <div class="tab" onclick="switchTab('exp','freelance',this)">Freelance</div>
+      <div class="tab" onclick="switchTab('exp','nks',this)">NKS Solution</div>
+    </div>
+    <div class="w-inset scrollable" style="margin:4px;padding:10px;height:240px;background:#fff;">
+
+      <div id="exp-nutifood" class="tab-content active">
+        <div style="font-weight:bold;font-size:12px;">NUTIFOOD NUTRITION FOOD JSC</div>
+        <div style="color:#555;font-size:10px;margin-bottom:8px;">Mobile &amp; Backend Developer &nbsp;•&nbsp; Nov 2020 – Present</div>
+        <ul style="padding-left:16px;line-height:2;list-style:disc;">
+          <li>Manage, fix &amp; maintain <b>OngBau Mobile POS</b> app (Android/Kotlin)</li>
+          <li>Built <b>OngBau Attendance</b> app; integrated printer SDK</li>
+          <li>Backend API for OngBau POS &amp; Attendance (Node.js + Oracle)</li>
+          <li>POS Nutistore → HUB migration (PostgreSQL)</li>
+          <li>Third-party integrations: <b>Momo, Pango CDP, Dpoint Loyalty</b></li>
+          <li>Odoo: Customer Service System, VoiceIP, Survey Distributors</li>
+          <li>E-commerce integration: <b>Shopee, Lazada, TikTok, Tiki</b></li>
+          <li>Odoo POS Nutistore maintenance</li>
+        </ul>
+      </div>
+
+      <div id="exp-freelance" class="tab-content">
+        <div style="font-weight:bold;font-size:12px;">Freelancer</div>
+        <div style="color:#555;font-size:10px;margin-bottom:8px;">Mobile Developer &nbsp;•&nbsp; Sep 2020 – Nov 2020</div>
+        <ul style="padding-left:16px;line-height:2;list-style:disc;">
+          <li>Developed <b>betting application</b> for client</li>
+          <li>Developed <b>health care application</b></li>
+          <li>Client communication and agile delivery</li>
+        </ul>
+      </div>
+
+      <div id="exp-nks" class="tab-content">
+        <div style="font-weight:bold;font-size:12px;">NKS Solution</div>
+        <div style="color:#555;font-size:10px;margin-bottom:8px;">Mobile Developer &nbsp;•&nbsp; 2019 – Sep 2020</div>
+        <ul style="padding-left:16px;line-height:2;list-style:disc;">
+          <li>Developed application for <b>land project</b></li>
+          <li>Built internal <b>Attendance Manager</b> app</li>
+          <li>Built internal <b>E-Learning platform</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     WINDOW: Skill Tree
+════════════════════════════════════════════════ -->
+<div class="win" id="win-skills" style="top:380px;left:40px;width:360px;">
+  <div class="win-titlebar" id="tb-win-skills">
+    <div class="win-title">
+      <span class="material-symbols-outlined" style="font-size:13px;">terminal</span> Skill_Tree.exe
+    </div>
+    <div class="win-controls">
+      <button class="ctrl-btn" onclick="minimizeWin('win-skills')">_</button>
+      <button class="ctrl-btn" onclick="maximizeWin('win-skills')">□</button>
+      <button class="ctrl-btn" onclick="closeWin('win-skills')">×</button>
+    </div>
+  </div>
+  <div class="win-body">
+    <div class="w-inset scrollable" style="margin:4px;padding:10px;height:210px;background:#fff;">
+      <div style="display:grid;gap:8px;">
+        <!-- skill rows -->
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+            <span>Android (Kotlin)</span><span>★★★★★</span>
+          </div>
+          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:90%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+            <span>Flutter</span><span>★★★★☆</span>
+          </div>
+          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:75%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+            <span>Node.js / NestJS</span><span>★★★★★</span>
+          </div>
+          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:88%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+            <span>Odoo (Python / XML)</span><span>★★★★☆</span>
+          </div>
+          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:78%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+            <span>Oracle SQL / PostgreSQL</span><span>★★★★☆</span>
+          </div>
+          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:80%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+            <span>Docker / Jenkins / ELK</span><span>★★★☆☆</span>
+          </div>
+          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:55%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+            <span>Golang / Python</span><span>★★★☆☆</span>
+          </div>
+          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:50%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     WINDOW: Education
+════════════════════════════════════════════════ -->
+<div class="win" id="win-edu" style="top:380px;left:420px;width:280px;">
+  <div class="win-titlebar" id="tb-win-edu">
+    <div class="win-title">
+      <span class="material-symbols-outlined" style="font-size:13px;">school</span> Education.txt
+    </div>
+    <div class="win-controls">
+      <button class="ctrl-btn" onclick="minimizeWin('win-edu')">_</button>
+      <button class="ctrl-btn" onclick="maximizeWin('win-edu')">□</button>
+      <button class="ctrl-btn" onclick="closeWin('win-edu')">×</button>
+    </div>
+  </div>
+  <div class="win-body">
+    <div class="w-inset" style="margin:4px;padding:12px;background:#fff;line-height:2;">
+      <div style="font-weight:bold;font-size:12px;">FPT Polytechnic</div>
+      <div style="color:#555;font-size:10px;">Application Development &nbsp;•&nbsp; 2016 – 2019</div>
+      <div style="margin-top:8px;font-size:11px;">Focus: Mobile &amp; Software Engineering</div>
+      <div style="margin-top:4px;" class="w-inset" style="padding:4px;">
+        <div style="padding:6px;font-size:10px;color:#555;">
+          LANGUAGES: Vietnamese (Native)<br>
+          English (Working proficiency)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     WINDOW: Contact
+════════════════════════════════════════════════ -->
+<div class="win" id="win-contact" style="top:200px;left:200px;width:300px;">
+  <div class="win-titlebar" id="tb-win-contact">
+    <div class="win-title">
+      <span class="material-symbols-outlined" style="font-size:13px;">alternate_email</span> Contact.txt
+    </div>
+    <div class="win-controls">
+      <button class="ctrl-btn" onclick="minimizeWin('win-contact')">_</button>
+      <button class="ctrl-btn" onclick="maximizeWin('win-contact')">□</button>
+      <button class="ctrl-btn" onclick="closeWin('win-contact')">×</button>
+    </div>
+  </div>
+  <div class="win-body">
+    <div class="w-inset" style="margin:4px;padding:12px;background:#fff;display:grid;gap:8px;font-size:11px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">phone</span>
+        <span>+84 081 401 5956</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">mail</span>
+        <a href="mailto:sunnam9897@gmail.com" style="color:var(--win-blue-start);text-decoration:underline;cursor:pointer;user-select:text;">sunnam9897@gmail.com</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">code</span>
+        <a href="https://github.com/ss-southernsun-982" target="_blank" style="color:var(--win-blue-start);text-decoration:underline;cursor:pointer;">github.com/ss-southernsun-982</a>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;">
+        <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">location_on</span>
+        <span>111b Ly Thanh Tong, Tan Phu District,<br>Ho Chi Minh City, Vietnam</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TASKBAR
+════════════════════════════════════════════════ -->
+<nav class="taskbar">
+  <button class="w-btn start-btn" id="start-button" onclick="toggleStartMenu()">
+    <span style="font-size:16px;">🪟</span> <b>Start</b>
+  </button>
+  <div style="height:20px;width:1px;background:var(--win-dark-grey);border-right:1px solid var(--win-white);margin:0 2px;"></div>
+
+  <div class="w-btn taskbar-item active" id="tb-btn-win-about" onclick="toggleWin('win-about')">
+    <span class="material-symbols-outlined" style="font-size:14px;">person</span> About Me
+  </div>
+  <div class="w-btn taskbar-item" id="tb-btn-win-exp" onclick="toggleWin('win-exp')">
+    <span class="material-symbols-outlined" style="font-size:14px;">work</span> Experience
+  </div>
+  <div class="w-btn taskbar-item" id="tb-btn-win-skills" onclick="toggleWin('win-skills')">
+    <span class="material-symbols-outlined" style="font-size:14px;">terminal</span> Skills
+  </div>
+  <div class="w-btn taskbar-item" id="tb-btn-win-edu" onclick="toggleWin('win-edu')">
+    <span class="material-symbols-outlined" style="font-size:14px;">school</span> Education
+  </div>
+  <div class="w-btn taskbar-item" id="tb-btn-win-contact" onclick="toggleWin('win-contact')">
+    <span class="material-symbols-outlined" style="font-size:14px;">alternate_email</span> Contact
+  </div>
+
+  <div class="systray">
+    <span class="material-symbols-outlined" style="font-size:14px;">volume_up</span>
+    <span id="clock" style="font-weight:bold;font-size:11px;min-width:55px;text-align:right;">--:-- --</span>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════
+     START MENU
+════════════════════════════════════════════════ -->
+<div id="start-menu">
+  <div class="start-sidebar"><span>Windows 98</span></div>
+  <div class="start-items">
+    <div class="start-item" onclick="openWin('win-about');closeStartMenu()">
+      <span class="material-symbols-outlined">person</span> About Me
+    </div>
+    <div class="start-item" onclick="openWin('win-exp');closeStartMenu()">
+      <span class="material-symbols-outlined">work</span> Experience
+    </div>
+    <div class="start-item" onclick="openWin('win-skills');closeStartMenu()">
+      <span class="material-symbols-outlined">terminal</span> Skill Tree
+    </div>
+    <div class="start-item" onclick="openWin('win-edu');closeStartMenu()">
+      <span class="material-symbols-outlined">school</span> Education
+    </div>
+    <div class="start-item" onclick="openWin('win-contact');closeStartMenu()">
+      <span class="material-symbols-outlined">alternate_email</span> Contact
+    </div>
+    <div class="start-sep"></div>
+    <div class="start-item" onclick="window.location.href='index.html'">
+      <span class="material-symbols-outlined">computer</span> Boot Menu
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Clock ──────────────────────────
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  }
+  tick(); setInterval(tick, 1000);
+
+  // ── Z-index management ─────────────
+  let zTop = 10;
+  function bringToFront(id) {
+    document.getElementById(id).style.zIndex = ++zTop;
+    document.querySelectorAll('.win-titlebar').forEach(tb => tb.classList.add('inactive'));
+    document.getElementById('tb-' + id).classList.remove('inactive');
+    document.querySelectorAll('.taskbar-item').forEach(b => b.classList.remove('active'));
+    const tbBtn = document.getElementById('tb-btn-' + id);
+    if (tbBtn) tbBtn.classList.add('active');
+  }
+
+  // ── Open / close / minimise ────────
+  function openWin(id) {
+    const w = document.getElementById(id);
+    w.classList.remove('hidden');
+    bringToFront(id);
+  }
+
+  function closeWin(id) {
+    document.getElementById(id).classList.add('hidden');
+    const tbBtn = document.getElementById('tb-btn-' + id);
+    if (tbBtn) tbBtn.classList.remove('active');
+  }
+
+  const minimized = {};
+  function minimizeWin(id) {
+    const w = document.getElementById(id);
+    if (!minimized[id]) {
+      minimized[id] = { h: w.style.height, overflow: w.style.overflow };
+      w.style.height = '0px';
+      w.style.overflow = 'hidden';
+      const tbBtn = document.getElementById('tb-btn-' + id);
+      if (tbBtn) tbBtn.classList.remove('active');
+    } else {
+      w.style.height = minimized[id].h;
+      w.style.overflow = minimized[id].overflow;
+      delete minimized[id];
+      bringToFront(id);
+    }
+  }
+
+  function toggleWin(id) {
+    const w = document.getElementById(id);
+    if (w.classList.contains('hidden')) {
+      openWin(id);
+    } else if (minimized[id]) {
+      minimizeWin(id); // restore
+    } else {
+      minimizeWin(id); // minimize
+    }
+  }
+
+  const saved = {};
+  function maximizeWin(id) {
+    const w = document.getElementById(id);
+    if (!saved[id]) {
+      saved[id] = { top: w.style.top, left: w.style.left, width: w.style.width, height: w.style.height };
+      w.style.top = '0px'; w.style.left = '0px';
+      w.style.width = '100vw'; w.style.height = 'calc(100vh - 30px)';
+      bringToFront(id);
+    } else {
+      Object.assign(w.style, saved[id]);
+      delete saved[id];
+    }
+  }
+
+  // ── Draggable windows ──────────────
+  document.querySelectorAll('.win-titlebar').forEach(tb => {
+    const winEl = tb.closest('.win');
+    let ox, oy, sx, sy, dragging = false;
+
+    tb.addEventListener('mousedown', e => {
+      if (e.target.closest('.win-controls')) return;
+      dragging = true;
+      ox = winEl.offsetLeft; oy = winEl.offsetTop;
+      sx = e.clientX;        sy = e.clientY;
+      bringToFront(winEl.id);
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      winEl.style.left = (ox + e.clientX - sx) + 'px';
+      winEl.style.top  = (oy + e.clientY - sy) + 'px';
+    });
+
+    document.addEventListener('mouseup', () => { dragging = false; });
+
+    winEl.addEventListener('mousedown', () => bringToFront(winEl.id));
+  });
+
+  // ── Tab switching ──────────────────
+  function switchTab(group, tabId, el) {
+    document.querySelectorAll('[id^="' + group + '-"]').forEach(c => c.classList.remove('active'));
+    document.getElementById(group + '-' + tabId).classList.add('active');
+    el.closest('.tab-bar').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── Start menu ─────────────────────
+  function toggleStartMenu() {
+    document.getElementById('start-menu').classList.toggle('open');
+  }
+  function closeStartMenu() {
+    document.getElementById('start-menu').classList.remove('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#start-menu') && !e.target.closest('#start-button')) closeStartMenu();
+  });
+</script>
+</body>
+</html>

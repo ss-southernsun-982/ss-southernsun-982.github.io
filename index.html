@@ -1,394 +1,346 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en">
-
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <!-- Anti-flash: apply saved theme before first paint -->
-  <script>
-    (function () {
-      const t = localStorage.getItem('theme');
-      if (t === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-      }
-    })();
-  </script>
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>TRUONG NHẬT NAM | System_Architect</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Inter:wght@400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "outline-variant": "#3b4b35",
-            "surface-container-highest": "#353534",
-            "on-primary-fixed": "#002200",
-            "primary-container": "#00ff00",
-            "inverse-primary": "#026e00",
-            "on-secondary": "#003354",
-            "surface-container": "#201f1f",
-            "on-secondary-container": "#003558",
-            "on-primary-container": "#027100",
-            "on-secondary-fixed": "#001d33",
-            "inverse-on-surface": "#313030",
-            "on-tertiary": "#412d00",
-            "tertiary-fixed": "#ffdea8",
-            "primary-fixed-dim": "#02e600",
-            "surface-container-lowest": "#0e0e0e",
-            "on-primary": "#013a00",
-            "on-tertiary-fixed": "#271900",
-            "on-error-container": "#ffdad6",
-            "error": "#ffb4ab",
-            "on-background": "#e5e2e1",
-            "outline": "#84967c",
-            "tertiary-container": "#ffd68f",
-            "surface-tint": "#02e600",
-            "surface-container-high": "#2a2a2a",
-            "surface-bright": "#3a3939",
-            "on-primary-fixed-variant": "#015300",
-            "surface-variant": "#353534",
-            "on-secondary-fixed-variant": "#004a77",
-            "secondary-fixed": "#cfe5ff",
-            "background": "#131313",
-            "secondary": "#98cbff",
-            "primary-fixed": "#77ff61",
-            "surface": "#131313",
-            "error-container": "#93000a",
-            "secondary-fixed-dim": "#98cbff",
-            "tertiary-fixed-dim": "#ffba20",
-            "on-tertiary-container": "#7f5a00",
-            "on-error": "#690005",
-            "surface-dim": "#131313",
-            "tertiary": "#fff7f0",
-            "on-surface-variant": "#b9ccaf",
-            "secondary-container": "#00a2fd",
-            "primary": "#eaffde",
-            "on-tertiary-fixed-variant": "#5e4200",
-            "on-surface": "#e5e2e1",
-            "surface-container-low": "#1c1b1b",
-            "inverse-surface": "#e5e2e1"
-          },
-          borderRadius: { DEFAULT: "0px", lg: "0px", xl: "0px", full: "0px" },
-          fontFamily: {
-            headline: ["Space Grotesk"],
-            body: ["Inter"],
-            mono: ["Fira Code", "monospace"]
-          }
-        }
+  <title>NAMTN_OS — Boot Menu</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      color: #aaa;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── POST / BIOS boot phase ── */
+    #post-screen {
+      padding: 16px 24px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    #post-log {
+      line-height: 1.6;
+    }
+
+    .post-line { display: block; }
+    .post-ok   { color: #0f0; }
+    .post-warn { color: #ffba20; }
+    .post-info { color: #98cbff; }
+    .post-head { color: #fff; font-weight: bold; }
+
+    /* ── GRUB menu phase ── */
+    #grub-screen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      padding: 40px 60px 20px;
+    }
+
+    #grub-title {
+      color: #fff;
+      font-size: 13px;
+      margin-bottom: 24px;
+      line-height: 1.8;
+    }
+
+    #grub-menu {
+      border: 1px solid #555;
+      width: 480px;
+      background: #000080;
+      padding: 4px 0;
+      margin-bottom: 20px;
+    }
+
+    .grub-item {
+      padding: 3px 12px;
+      color: #aaa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .grub-item .os-icon { font-size: 16px; width: 20px; text-align: center; }
+
+    .grub-item.selected {
+      background: #aaa;
+      color: #000080;
+      font-weight: bold;
+    }
+
+    #grub-hint {
+      color: #aaa;
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    #grub-hint kbd {
+      color: #fff;
+      background: #333;
+      padding: 1px 5px;
+      border: 1px solid #666;
+    }
+
+    #grub-countdown {
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+
+    #grub-countdown span { color: #fff; }
+
+    /* ── Loading bar ── */
+    #loading-screen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    #loading-os-name { color: #fff; font-size: 16px; }
+
+    #loading-bar-wrap {
+      width: 320px;
+      height: 14px;
+      border: 1px solid #555;
+      background: #000;
+      padding: 2px;
+    }
+
+    #loading-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #aaa;
+      transition: width 0.05s linear;
+    }
+
+    #loading-msg { color: #777; font-size: 11px; }
+
+    /* ── Bottom status bar ── */
+    #status-bar {
+      background: #000080;
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Phase 1: POST / BIOS -->
+  <div id="post-screen">
+    <div id="post-log"></div>
+  </div>
+
+  <!-- Phase 2: GRUB boot selector -->
+  <div id="grub-screen">
+    <pre id="grub-title">
+    GNU GRUB  version 2.06  |  NAMTN_OS Boot Manager
+    ─────────────────────────────────────────────────</pre>
+
+    <div id="grub-menu">
+      <div class="grub-item selected" data-href="index-linux.html">
+        <span class="os-icon">🐧</span> Linux Terminal  (namtn-dev-portfolio)
+      </div>
+      <div class="grub-item" data-href="index-windows98.html">
+        <span class="os-icon">🪟</span> Microsoft Windows 98  (Second Edition)
+      </div>
+    </div>
+
+    <div id="grub-hint">
+      Use <kbd>↑</kbd> <kbd>↓</kbd> to select.&nbsp; Press <kbd>Enter</kbd> to boot.
+      <br>Press <kbd>e</kbd> to edit or <kbd>c</kbd> for command line.
+    </div>
+
+    <div id="grub-countdown">Booting <span id="countdown-os">Linux Terminal</span> in <span id="countdown-n">8</span>s...</div>
+  </div>
+
+  <!-- Phase 3: Loading -->
+  <div id="loading-screen">
+    <div id="loading-os-name"></div>
+    <div id="loading-bar-wrap"><div id="loading-bar-fill"></div></div>
+    <div id="loading-msg">Loading kernel modules...</div>
+  </div>
+
+  <!-- Bottom bar (always visible) -->
+  <div id="status-bar">
+    <span>NAMTN_OS Boot Manager v2.0</span>
+    <span id="clock">--:--:--</span>
+  </div>
+
+  <script>
+    // ── Clock ──────────────────────────────────────
+    function updateClock() {
+      document.getElementById('clock').textContent =
+        new Date().toLocaleTimeString('en-GB');
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ── POST lines ─────────────────────────────────
+    const postLines = [
+      { t: 'post-head', text: 'NAMTN_OS BIOS v2.0  |  Copyright (C) 2026  |  All Rights Reserved' },
+      { t: 'post-info', text: 'CPU: Truong Nhat Nam Application Developer @ 5+ Years' },
+      { t: 'post-info', text: 'RAM: 64MB  [Android/Kotlin · Flutter · Node.js · NestJS · Odoo]' },
+      { t: 'post-line',text: '' },
+      { t: 'post-line', text: 'Checking memory...' },
+      { t: 'post-ok',   text: '  [  OK  ]  Memory check passed                   640K conventional' },
+      { t: 'post-line', text: 'Detecting storage devices...' },
+      { t: 'post-ok',   text: '  [  OK  ]  hda0: Oracle SQL / PostgreSQL          3.0GB' },
+      { t: 'post-ok',   text: '  [  OK  ]  hda1: Redis / RabbitMQ / Kafka         1.2GB' },
+      { t: 'post-ok',   text: '  [  OK  ]  hda2: Docker / Jenkins / ELK           0.8GB' },
+      { t: 'post-line', text: 'Loading experience modules...' },
+      { t: 'post-ok',   text: '  [  OK  ]  NUTIFOOD NUTRITION FOOD JSC            Nov 2020 - Present' },
+      { t: 'post-ok',   text: '  [  OK  ]  NKS Solution                           2019 - Sep 2020' },
+      { t: 'post-ok',   text: '  [  OK  ]  Freelancer                             Sep - Nov 2020' },
+      { t: 'post-line', text: 'Initialising boot manager...' },
+      { t: 'post-ok',   text: '  [  OK  ]  GRUB 2.06 loaded' },
+    ];
+
+    const log = document.getElementById('post-log');
+    let pi = 0;
+
+    function printNextLine() {
+      if (pi >= postLines.length) {
+        showGrub();
+        return;
       }
+      const { t, text } = postLines[pi++];
+      const el = document.createElement('span');
+      el.className = `post-line ${t}`;
+      el.textContent = text;
+      log.appendChild(el);
+      log.appendChild(document.createTextNode('\n'));
+      setTimeout(printNextLine, pi === 1 ? 0 : 70 + Math.random() * 60);
+    }
+
+    printNextLine();
+
+    // ── GRUB menu ──────────────────────────────────
+    const grubScreen   = document.getElementById('grub-screen');
+    const postScreen   = document.getElementById('post-screen');
+    const items        = document.querySelectorAll('.grub-item');
+    const countdownEl  = document.getElementById('countdown-n');
+    const countdownOs  = document.getElementById('countdown-os');
+    let selected = 0;
+    let countdown = 8;
+    let countdownTimer = null;
+
+    function showGrub() {
+      postScreen.style.display = 'none';
+      grubScreen.style.display = 'flex';
+      startCountdown();
+    }
+
+    function updateSelection() {
+      items.forEach((el, i) => {
+        el.classList.toggle('selected', i === selected);
+      });
+      countdownOs.textContent = items[selected].querySelector('span:last-child')
+        ? items[selected].textContent.trim().split('(')[0].trim()
+        : 'Linux Terminal';
+    }
+
+    function startCountdown() {
+      countdownTimer = setInterval(() => {
+        countdown--;
+        countdownEl.textContent = countdown;
+        if (countdown <= 0) {
+          clearInterval(countdownTimer);
+          bootSelected();
+        }
+      }, 1000);
+    }
+
+    function bootSelected() {
+      const href = items[selected].dataset.href;
+      const osName = items[selected].textContent.trim().split('(')[0].trim();
+      showLoading(osName, href);
+    }
+
+    items.forEach((el, i) => {
+      el.addEventListener('click', () => {
+        clearInterval(countdownTimer);
+        selected = i;
+        updateSelection();
+        bootSelected();
+      });
+      el.addEventListener('mouseover', () => {
+        clearInterval(countdownTimer);
+        selected = i;
+        updateSelection();
+        countdown = 8;
+        countdownEl.textContent = countdown;
+        startCountdown();
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (grubScreen.style.display === 'none') return;
+      if (e.key === 'ArrowUp') {
+        clearInterval(countdownTimer);
+        selected = (selected - 1 + items.length) % items.length;
+        updateSelection();
+        countdown = 8; countdownEl.textContent = countdown;
+        startCountdown();
+      } else if (e.key === 'ArrowDown') {
+        clearInterval(countdownTimer);
+        selected = (selected + 1) % items.length;
+        updateSelection();
+        countdown = 8; countdownEl.textContent = countdown;
+        startCountdown();
+      } else if (e.key === 'Enter') {
+        clearInterval(countdownTimer);
+        bootSelected();
+      }
+    });
+
+    // ── Loading screen ─────────────────────────────
+    const loadingScreen  = document.getElementById('loading-screen');
+    const loadingOsName  = document.getElementById('loading-os-name');
+    const loadingBarFill = document.getElementById('loading-bar-fill');
+    const loadingMsg     = document.getElementById('loading-msg');
+
+    const loadingMsgs = [
+      'Loading kernel modules...',
+      'Mounting filesystems...',
+      'Starting system services...',
+      'Initialising display server...',
+      'Loading user session...',
+    ];
+
+    function showLoading(osName, href) {
+      grubScreen.style.display = 'none';
+      loadingScreen.style.display = 'flex';
+      loadingOsName.textContent = `Starting ${osName}...`;
+
+      let pct = 0;
+      let msgIdx = 0;
+
+      const fill = setInterval(() => {
+        pct += 2;
+        loadingBarFill.style.width = pct + '%';
+        if (pct % 20 === 0 && msgIdx < loadingMsgs.length) {
+          loadingMsg.textContent = loadingMsgs[msgIdx++];
+        }
+        if (pct >= 100) {
+          clearInterval(fill);
+          setTimeout(() => { window.location.href = href; }, 200);
+        }
+      }, 30);
     }
   </script>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-
-<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
-
-  <!-- ── Login Screen ──────────────────────────────── -->
-  <div id="login-screen" style="display:none;">
-    <div id="login-boot-log"></div>
-    <div id="login-panel">
-      <div id="login-panel-header">
-        <span>portfolio-os</span>
-        <span id="login-hostname">tty1 — kernel 6.8.0</span>
-      </div>
-      <div id="login-panel-body">
-        <div class="login-row">
-          <span class="login-label">login:</span>
-          <span class="login-value">namtn</span>
-        </div>
-        <div id="login-password-row" class="login-row">
-          <span class="login-label">password:</span>
-          <input id="login-password-input" type="password" placeholder="········" autocomplete="off" spellcheck="false" />
-        </div>
-        <div id="login-status"></div>
-        <button id="login-btn">[ LOGIN ]</button>
-      </div>
-      <div id="login-panel-footer">Press ENTER or click LOGIN to authenticate</div>
-    </div>
-  </div>
-
-  <!-- ── Terminal Search Overlay ───────────────────── -->
-  <div id="terminal-overlay"></div>
-
-  <!-- ── Terminal Search Popup ─────────────────────── -->
-  <div id="terminal-popup" role="dialog" aria-label="Terminal Search">
-    <div class="title-bar">
-      <span>SEARCH — terminal@portfolio</span>
-      <span id="t-result-count">type to search...</span>
-    </div>
-    <div id="terminal-input-line">
-      <span class="prompt">search&gt;</span>
-      <input autocomplete="off" id="terminal-search-input" placeholder="query..." spellcheck="false" type="text" />
-    </div>
-    <div id="terminal-results"></div>
-    <div id="terminal-footer">
-      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-      <span><kbd>Enter</kbd> go to</span>
-      <span><kbd>Esc</kbd> close</span>
-    </div>
-  </div>
-
-  <!-- ── TopAppBar ──────────────────────────────────── -->
-  <header class="bg-[#131313] text-[#00FF00] font-mono uppercase tracking-tighter text-sm flex justify-between items-center w-full px-4 h-10 fixed top-0 z-50 border-none">
-    <div class="font-mono font-bold text-[#eaffde] flex items-center gap-2">
-      <span class="material-symbols-outlined text-xs">terminal</span>
-      ROOT@DEV:~$
-    </div>
-    <div class="flex items-center space-x-4">
-      <span class="material-symbols-outlined text-sm hover:bg-[#2a2a2a] p-1 cursor-pointer" id="btn-open-terminal" title="Search (Ctrl+K)">terminal</span>
-      <span class="material-symbols-outlined text-sm hover:bg-[#2a2a2a] p-1 cursor-pointer" id="btn-theme-toggle" title="Toggle theme">light_mode</span>
-      <span class="material-symbols-outlined text-sm hover:bg-[#2a2a2a] p-1 cursor-pointer" id="btn-power" title="Lock screen">power_settings_new</span>
-    </div>
-  </header>
-
-  <div class="flex min-h-screen pt-10 pb-6">
-    <!-- ── SideNavBar ──────────────────────────────── -->
-    <aside class="hidden md:flex flex-col h-screen fixed left-0 w-64 bg-[#0e0e0e] text-[#00FF00] font-mono text-xs space-y-1 py-4 border-none">
-      <div class="px-6 mb-8 flex flex-col items-center text-center">
-        <div class="w-20 h-20 bg-surface-container-high flex items-center justify-center mb-4 border border-outline-variant">
-          <span class="material-symbols-outlined text-4xl" style="font-variation-settings:'FILL' 1;">person</span>
-        </div>
-        <h2 class="font-bold text-sm tracking-tight">System_Architect</h2>
-        <p class="text-[#84967c]">v2.0.4-stable</p>
-      </div>
-      <nav class="flex-1 flex flex-col px-4">
-        <a class="text-[#013a00] bg-[#00ff00] font-bold px-2 py-2 flex items-center gap-3 transition-colors duration-75" href="#home">
-          <span class="material-symbols-outlined text-xs">folder</span> ~/home
-        </a>
-        <a class="text-[#84967c] px-2 py-2 flex items-center gap-3 hover:bg-[#2a2a2a] hover:text-[#eaffde] transition-colors duration-75" href="#projects">
-          <span class="material-symbols-outlined text-xs">code</span> ~/projects
-        </a>
-        <a class="text-[#84967c] px-2 py-2 flex items-center gap-3 hover:bg-[#2a2a2a] hover:text-[#eaffde] transition-colors duration-75" href="#skills">
-          <span class="material-symbols-outlined text-xs">terminal</span> ~/skills
-        </a>
-        <a class="text-[#84967c] px-2 py-2 flex items-center gap-3 hover:bg-[#2a2a2a] hover:text-[#eaffde] transition-colors duration-75" href="#contact">
-          <span class="material-symbols-outlined text-xs">alternate_email</span> ~/contact
-        </a>
-        <a class="text-[#84967c] px-2 py-2 flex items-center gap-3 hover:bg-[#2a2a2a] hover:text-[#eaffde] transition-colors duration-75" href="#logs">
-          <span class="material-symbols-outlined text-xs">history</span> ~/logs
-        </a>
-      </nav>
-    </aside>
-
-    <!-- ── Main Content ───────────────────────────── -->
-    <main class="flex-1 md:ml-64 p-4 md:p-8 max-w-5xl">
-
-      <!-- Home -->
-      <section class="mb-12" id="home">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-primary-fixed-dim">nam@dev-portfolio:~$</span>
-          <span class="text-on-surface">cat profile.json</span>
-        </div>
-        <div class="bg-surface-container-lowest p-6 border-none text-sm leading-relaxed overflow-x-auto">
-          <pre class="text-[#00ff00] font-mono">{
-  <span class="text-secondary">"identity"</span>: {
-    <span class="text-secondary">"name"</span>: <span class="text-tertiary-fixed-dim">"TRUONG NHAT NAM"</span>,
-    <span class="text-secondary">"role"</span>: <span class="text-tertiary-fixed-dim">"Application Developer"</span>,
-    <span class="text-secondary">"location"</span>: <span class="text-tertiary-fixed-dim">"Ho Chi Minh City, Vietnam"</span>,
-    <span class="text-secondary">"email"</span>: <span class="text-tertiary-fixed-dim">"sunnam9897@gmail.com"</span>,
-    <span class="text-secondary">"phone"</span>: <span class="text-tertiary-fixed-dim">"0814015956"</span>,
-    <span class="text-secondary">"github"</span>: <span class="text-tertiary-fixed-dim">"ss-southernsun-982"</span>,
-    <span class="text-secondary">"motto"</span>: <span class="text-tertiary-fixed-dim">"Turning caffeine into high-performance code."</span>
-  },
-  <span class="text-secondary">"status"</span>: <span class="text-tertiary-fixed-dim">"READY_TO_DEPLOY"</span>,
-  <span class="text-secondary">"architecture"</span>: [<span class="text-tertiary-fixed-dim">"Mobile"</span>, <span class="text-tertiary-fixed-dim">"Full-stack"</span>, <span class="text-tertiary-fixed-dim">"Odoo"</span>]
-}
-</pre>
-        </div>
-      </section>
-
-      <!-- ASCII Art -->
-      <div class="mb-12 opacity-50 select-none hidden md:block">
-        <pre class="text-[#02e600] text-[8px] leading-[6px]"> ██████╗ ███████╗██╗   ██╗    ██████╗  ██████╗ ██████╗ ████████╗███████╗ ██████╗ ██╗     ██╗ ██████╗
- ██╔══██╗██╔════╝██║   ██║    ██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝██╔═══██╗██║     ██║██╔═══██╗
- ██║  ██║█████╗  ██║   ██║    ██████╔╝██║   ██║██████╔╝   ██║   █████╗  ██║   ██║██║     ██║██║   ██║
- ██║  ██║██╔══╝  ╚██╗ ██╔╝    ██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══╝  ██║   ██║██║     ██║██║   ██║
- ██████╔╝███████╗ ╚████╔╝     ██║     ╚██████╔╝██║  ██║   ██║   ██║     ╚██████╔╝███████╗██║╚██████╔╝
- ╚═════╝ ╚══════╝  ╚═══╝      ╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝
-</pre>
-      </div>
-
-      <!-- Projects / Experience -->
-      <section class="mb-12" id="projects">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-primary-fixed-dim">nam@dev-portfolio:~$</span>
-          <span class="text-on-surface">ls -la projects/history</span>
-        </div>
-        <div class="space-y-4">
-          <!-- NUTIFOOD -->
-          <div class="bg-surface-container-low p-4 flex gap-6 hover:bg-surface-container-high transition-colors">
-            <div class="hidden sm:block"><span class="text-outline">drwxr-xr-x</span></div>
-            <div class="flex-1">
-              <h3 class="text-primary-container font-bold flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">corporate_fare</span>
-                NUTIFOOD NUTRITION FOOD JSC [NOV_2020 - PRESENT]
-              </h3>
-              <p class="text-[#84967c] text-xs mb-2">Role: Mobile &amp; Backend Developer</p>
-              <ul class="text-sm text-on-surface max-w-2xl space-y-1">
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">├──</span> Manage, fix &amp; maintain OngBau mobile POS app (Android/Kotlin)</li>
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">├──</span> Integration printer SDK to mobile app; built OngBau Attendance app</li>
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">├──</span> Backend API: OngBau POS &amp; Attendance (Node.js, Oracle)</li>
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">├──</span> Integration POS Nutistore → HUB (PostgreSQL); Momo, Pango CDP, Dpoint Loyalty</li>
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">├──</span> Odoo: Customer Service System, Survey Distributors, VoiceIP trigger</li>
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">└──</span> Sales Order: Ecommerce integration — Shopee, Lazada, TikTok, Tiki</li>
-              </ul>
-            </div>
-          </div>
-          <!-- Freelancer -->
-          <div class="bg-surface-container-low p-4 flex gap-6 hover:bg-surface-container-high transition-colors">
-            <div class="hidden sm:block"><span class="text-outline">drwxr-xr-x</span></div>
-            <div class="flex-1">
-              <h3 class="text-primary-container font-bold flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">person_pin</span>
-                FREELANCER [SEP_2020 - NOV_2020]
-              </h3>
-              <p class="text-[#84967c] text-xs mb-2">Role: Mobile Developer</p>
-              <ul class="text-sm text-on-surface max-w-2xl space-y-1">
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">├──</span> Developed betting application</li>
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">└──</span> Developed health care application</li>
-              </ul>
-            </div>
-          </div>
-          <!-- NKS Solution -->
-          <div class="bg-surface-container-low p-4 flex gap-6 hover:bg-surface-container-high transition-colors">
-            <div class="hidden sm:block"><span class="text-outline">drwxr-xr-x</span></div>
-            <div class="flex-1">
-              <h3 class="text-primary-container font-bold flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">dns</span>
-                NKS SOLUTION [2019 - SEP_2020]
-              </h3>
-              <p class="text-[#84967c] text-xs mb-2">Role: Mobile Developer</p>
-              <ul class="text-sm text-on-surface max-w-2xl space-y-1">
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">├──</span> Developed application for land project</li>
-                <li class="flex gap-2"><span class="text-primary-fixed-dim">└──</span> Built internal apps: attendance manager, e-learning platform</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Skills -->
-      <section class="mb-12" id="skills">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-primary-fixed-dim">nam@dev-portfolio:~$</span>
-          <span class="text-on-surface">npm list --global --depth=0</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="border border-outline-variant p-4">
-            <h4 class="text-secondary font-bold mb-4 uppercase text-xs tracking-[0.2em]">/mobile_dev</h4>
-            <ul class="space-y-2 text-sm">
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Android (Kotlin)</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Flutter</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">└──</span> Mobile POS &amp; Attendance Systems</li>
-            </ul>
-          </div>
-          <div class="border border-outline-variant p-4">
-            <h4 class="text-secondary font-bold mb-4 uppercase text-xs tracking-[0.2em]">/backend</h4>
-            <ul class="space-y-2 text-sm">
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Node.js / NestJS</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Golang / Python</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">└──</span> Odoo (Python, XML, JS)</li>
-            </ul>
-          </div>
-          <div class="border border-outline-variant p-4">
-            <h4 class="text-secondary font-bold mb-4 uppercase text-xs tracking-[0.2em]">/data_persistence</h4>
-            <ul class="space-y-2 text-sm">
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Oracle SQL / PostgreSQL</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Redis (Caching Layer)</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">└──</span> RabbitMQ / Kafka</li>
-            </ul>
-          </div>
-          <div class="border border-outline-variant p-4">
-            <h4 class="text-secondary font-bold mb-4 uppercase text-xs tracking-[0.2em]">/devops_infra</h4>
-            <ul class="space-y-2 text-sm">
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Docker / Containerization</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">├──</span> Jenkins / ELK Stack</li>
-              <li class="flex items-center gap-2"><span class="text-primary-fixed-dim">└──</span> Microservice Architecture</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- Education -->
-      <section class="mb-12">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-primary-fixed-dim">nam@dev-portfolio:~$</span>
-          <span class="text-on-surface">cat education.txt</span>
-        </div>
-        <div class="bg-surface-container-low p-6 font-mono text-sm border-l-4 border-primary-container">
-          <p class="mb-2"><span class="text-tertiary-fixed-dim font-bold">DEGREE:</span> Application Development</p>
-          <p class="mb-2"><span class="text-tertiary-fixed-dim font-bold">INSTITUTION:</span> FPT Polytechnic</p>
-          <p class="mb-4"><span class="text-tertiary-fixed-dim font-bold">PERIOD:</span> 2016 – 2019</p>
-          <div class="bg-surface-container-highest p-3 text-xs text-[#84967c]">
-            [SYSTEM_INFO]: FOCUS: Mobile &amp; Application Development
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact -->
-      <section class="mb-20" id="contact">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-primary-fixed-dim">nam@dev-portfolio:~$</span>
-          <span class="text-on-surface">env | grep CONTACT</span>
-        </div>
-        <div class="space-y-2 font-mono text-sm">
-          <div class="flex gap-4">
-            <span class="text-secondary w-24">EMAIL=</span>
-            <a class="text-primary-container underline hover:bg-primary-container hover:text-on-primary" href="mailto:sunnam9897@gmail.com">sunnam9897@gmail.com</a>
-          </div>
-          <div class="flex gap-4">
-            <span class="text-secondary w-24">GITHUB=</span>
-            <a class="text-primary-container underline hover:bg-primary-container hover:text-on-primary" href="https://github.com/ss-southernsun-982" target="_blank">github.com/ss-southernsun-982</a>
-          </div>
-          <div class="flex gap-4">
-            <span class="text-secondary w-24">PHONE=</span>
-            <span class="text-on-surface-variant">+84-081-401-5956</span>
-          </div>
-          <div class="flex gap-4">
-            <span class="text-secondary w-24">ADDRESS=</span>
-            <span class="text-on-surface-variant">111b Ly Thanh Tong, Tan Phu District, HCMC</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Blinking Cursor -->
-      <div class="flex items-center gap-2 text-primary-fixed-dim mt-8">
-        <span>nam@dev-portfolio:~$</span>
-        <span class="w-2 h-4 bg-primary-container blink"></span>
-      </div>
-    </main>
-  </div>
-
-  <!-- ── Footer ─────────────────────────────────────── -->
-  <footer class="fixed bottom-0 w-full flex justify-between items-center px-4 h-6 z-50 bg-[#0e0e0e] text-[#ffba20] font-mono text-[10px] uppercase border-none">
-    <div>SYS_READY // BRANCH: MAIN // USER: NAMTN // UPTIME: 99.9%</div>
-    <div class="flex gap-4">
-      <a class="hover:text-[#eaffde] transition-colors" href="https://github.com/ss-southernsun-982" target="_blank">GITHUB</a>
-      <a class="hover:text-[#eaffde] transition-colors" href="mailto:sunnam9897@gmail.com">EMAIL</a>
-      <a class="hover:text-[#eaffde] transition-colors" href="#">DOCS</a>
-    </div>
-  </footer>
-
-  <!-- ── Mobile Nav ─────────────────────────────────── -->
-  <div class="md:hidden fixed bottom-6 left-0 w-full px-4 z-40">
-    <div class="bg-surface-container-high border border-outline-variant flex justify-around p-2">
-      <a class="material-symbols-outlined text-primary-container p-2" href="#home">home</a>
-      <a class="material-symbols-outlined text-on-surface-variant p-2" href="#projects">folder</a>
-      <a class="material-symbols-outlined text-on-surface-variant p-2" href="#skills">code</a>
-      <a class="material-symbols-outlined text-on-surface-variant p-2" href="#contact">alternate_email</a>
-    </div>
-  </div>
-
-  <!-- ── Scripts ────────────────────────────────────── -->
-  <script src="js/nav.js"></script>
-  <script src="js/theme.js"></script>
-  <script src="js/terminal-search.js"></script>
-  <script src="js/login.js"></script>
 </body>
-
 </html>
