@@ -1,25 +1,45 @@
 (() => {
-  const navLinks = document.querySelectorAll('aside nav a');
+  const desktopLinks = document.querySelectorAll('aside nav a');
+  const mobileLinks  = document.querySelectorAll('.md\\:hidden nav a, div.md\\:hidden a[href^="#"]');
 
-  function setActive(activeLink) {
-    navLinks.forEach(link => {
-      link.classList.remove('text-[#013a00]', 'bg-[#00ff00]', 'font-bold');
-      link.classList.add('text-[#84967c]');
+  function setActive(sectionId) {
+    // Desktop sidebar
+    desktopLinks.forEach(link => {
+      const isActive = link.getAttribute('href') === '#' + sectionId;
+      link.classList.toggle('text-[#013a00]', isActive);
+      link.classList.toggle('bg-[#00ff00]',   isActive);
+      link.classList.toggle('font-bold',       isActive);
+      link.classList.toggle('text-[#84967c]', !isActive);
     });
-    activeLink.classList.remove('text-[#84967c]');
-    activeLink.classList.add('text-[#013a00]', 'bg-[#00ff00]', 'font-bold');
+
+    // Mobile bottom nav
+    mobileLinks.forEach(link => {
+      const isActive = link.getAttribute('href') === '#' + sectionId;
+      link.classList.toggle('text-primary-container',  isActive);
+      link.classList.toggle('text-on-surface-variant', !isActive);
+    });
   }
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => setActive(link));
+  // Click on desktop links
+  desktopLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const id = link.getAttribute('href').replace('#', '');
+      setActive(id);
+    });
   });
 
+  // Click on mobile links
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const id = link.getAttribute('href').replace('#', '');
+      setActive(id);
+    });
+  });
+
+  // Scroll spy
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const link = document.querySelector(`aside nav a[href="#${entry.target.id}"]`);
-        if (link) setActive(link);
-      }
+      if (entry.isIntersecting) setActive(entry.target.id);
     });
   }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
 
