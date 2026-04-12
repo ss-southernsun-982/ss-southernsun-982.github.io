@@ -160,16 +160,6 @@
     .tab-content.active { display: block; }
 
     /* ── Progress bar ── */
-    .skill-bar-wrap {
-      height: 12px;
-      background: var(--win-white);
-      border: 1px inset var(--win-dark-grey);
-      overflow: hidden;
-    }
-    .skill-bar-fill {
-      height: 100%;
-      background: repeating-linear-gradient(90deg, #000080 0px, #000080 8px, #1084d0 8px, #1084d0 16px);
-    }
 
     /* ── Desktop icons ── */
     .desktop-icon {
@@ -422,49 +412,38 @@
   </div>
   <div class="win-body">
     <div class="w-inset scrollable" style="margin:4px;padding:10px;height:210px;background:#fff;">
-      <div style="display:grid;gap:8px;">
-        <!-- skill rows -->
-        <div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
-            <span>Android (Kotlin)</span><span>★★★★★</span>
-          </div>
-          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:90%"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">smartphone</span>
+          <span>Android (Kotlin)</span>
         </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
-            <span>Flutter</span><span>★★★★☆</span>
-          </div>
-          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:75%"></div></div>
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">flutter_dash</span>
+          <span>Flutter</span>
         </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
-            <span>Node.js / NestJS</span><span>★★★★★</span>
-          </div>
-          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:88%"></div></div>
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">hub</span>
+          <span>Node.js / NestJS</span>
         </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
-            <span>Odoo (Python / XML)</span><span>★★★★☆</span>
-          </div>
-          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:78%"></div></div>
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">settings_applications</span>
+          <span>Odoo (Python/XML)</span>
         </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
-            <span>Oracle SQL / PostgreSQL</span><span>★★★★☆</span>
-          </div>
-          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:80%"></div></div>
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">database</span>
+          <span>Oracle SQL / PostgreSQL</span>
         </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
-            <span>Docker / Jenkins / ELK</span><span>★★★☆☆</span>
-          </div>
-          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:55%"></div></div>
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">memory</span>
+          <span>Redis / RabbitMQ / Kafka</span>
         </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
-            <span>Golang / Python</span><span>★★★☆☆</span>
-          </div>
-          <div class="skill-bar-wrap"><div class="skill-bar-fill" style="width:50%"></div></div>
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">dns</span>
+          <span>Docker / Jenkins / ELK</span>
+        </div>
+        <div class="w-outset" style="padding:6px 8px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:16px;color:var(--win-blue-start);">code</span>
+          <span>Golang / Python</span>
         </div>
       </div>
     </div>
