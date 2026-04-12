@@ -3,3 +3,10 @@ graphify-out/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Claude
+.claude/
+CLAUDE.md
+
+# VSCode local history
+.history/
