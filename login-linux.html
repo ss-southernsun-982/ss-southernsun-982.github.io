@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>portfolio-os — login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #050505;
+      font-family: 'Fira Code', monospace;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Scanline overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #login-boot-log {
+      width: min(700px, 92vw);
+      height: 200px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 2;
+    }
+    #login-boot-log .log-line {
+      font-size: 11px;
+      color: #4a7a4a;
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    #login-boot-log .log-line.ok   { color: #00c800; }
+    #login-boot-log .log-line.warn { color: #c8a000; }
+    #login-boot-log .log-line.info { color: #4a7a4a; }
+
+    #login-panel {
+      width: min(480px, 92vw);
+      border: 1px solid #1a3a1a;
+      background: #080808;
+      position: relative;
+      z-index: 2;
+    }
+    #login-panel-header {
+      background: #0e200e;
+      padding: 8px 16px;
+      font-size: 11px;
+      border-bottom: 1px solid #1a3a1a;
+      display: flex;
+      justify-content: space-between;
+    }
+    #login-panel-header span { color: #4a7a4a; }
+
+    #login-panel-body { padding: 24px 20px 20px; }
+
+    .login-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .login-label { color: #00ff00; width: 120px; flex-shrink: 0; }
+    .login-value { color: #eaffde; }
+
+    #login-password-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    #login-password-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #eaffde;
+      font-family: inherit;
+      font-size: 13px;
+      caret-color: #00ff00;
+      width: 100%;
+      letter-spacing: 0.15em;
+    }
+    #login-password-input::placeholder { color: #2a4a2a; letter-spacing: 0; }
+
+    #login-status {
+      font-size: 11px;
+      color: #4a7a4a;
+      margin-bottom: 16px;
+      min-height: 16px;
+    }
+    #login-status.error   { color: #ff4444; }
+    #login-status.success { color: #00ff00; }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    #login-btn {
+      background: #00ff00;
+      color: #013a00;
+      border: none;
+      padding: 7px 20px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    #login-btn:hover { background: #02e600; }
+
+    #shutdown-btn {
+      background: transparent;
+      color: #4a7a4a;
+      border: 1px solid #1a3a1a;
+      padding: 7px 20px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      transition: color 0.1s, border-color 0.1s;
+    }
+    #shutdown-btn:hover { color: #eaffde; border-color: #3a5a3a; }
+
+    #login-panel-footer {
+      padding: 8px 16px;
+      font-size: 10px;
+      color: #2a4a2a;
+      border-top: 1px solid #0e1a0e;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="login-boot-log"></div>
+
+  <div id="login-panel">
+    <div id="login-panel-header">
+      <span>portfolio-os</span>
+      <span id="login-hostname">tty1 — kernel 6.8.0</span>
+    </div>
+    <div id="login-panel-body">
+      <div class="login-row">
+        <span class="login-label">login:</span>
+        <span class="login-value">namtn</span>
+      </div>
+      <div id="login-password-row" class="login-row">
+        <span class="login-label">password:</span>
+        <input id="login-password-input" type="password" placeholder="········" autocomplete="off" spellcheck="false" />
+      </div>
+      <div id="login-status"></div>
+      <div class="btn-row">
+        <button id="login-btn">[ LOGIN ]</button>
+        <button id="shutdown-btn">[ SHUTDOWN ]</button>
+      </div>
+    </div>
+    <div id="login-panel-footer">Press ENTER or click LOGIN to authenticate</div>
+  </div>
+
+  <script>
+    const bootLog   = document.getElementById('login-boot-log');
+    const passInput = document.getElementById('login-password-input');
+    const loginBtn  = document.getElementById('login-btn');
+    const statusEl  = document.getElementById('login-status');
+
+    const BOOT_LINES = [
+      { text: '[    0.000000] Linux version 6.8.0-portfolio (gcc 13.2.0)', type: 'info' },
+      { text: '[    0.000000] BIOS-provided physical RAM map:', type: 'info' },
+      { text: '[    0.112431] ACPI: IRQ0 used by override.', type: 'info' },
+      { text: '[    0.448812] PCI: Using configuration type 1 for base access', type: 'info' },
+      { text: '[    1.203944] systemd[1]: Starting system...', type: 'info' },
+      { text: '[  OK  ] Started Journal Service.', type: 'ok' },
+      { text: '[  OK  ] Reached target Local File Systems.', type: 'ok' },
+      { text: '[  OK  ] Started Network Manager.', type: 'ok' },
+      { text: '[  OK  ] Started OpenSSH server daemon.', type: 'ok' },
+      { text: '[ WARN ] Clock skew detected. Syncing via NTP...', type: 'warn' },
+      { text: '[  OK  ] Started Portfolio Service v2.0.4-stable.', type: 'ok' },
+      { text: '[  OK  ] Reached target Multi-User System.', type: 'ok' },
+    ];
+
+    function getTimestamp() {
+      return new Date().toLocaleTimeString('en-US', { hour12: false });
+    }
+
+    function showLine(line, delay) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const div = document.createElement('div');
+          div.className = `log-line ${line.type}`;
+          div.textContent = line.text;
+          bootLog.appendChild(div);
+          requestAnimationFrame(() => {
+            div.style.opacity = '1';
+            div.style.transform = 'translateY(0)';
+          });
+          bootLog.scrollTop = bootLog.scrollHeight;
+          resolve();
+        }, delay);
+      });
+    }
+
+    async function runBootSequence() {
+      let delay = 0;
+      for (const line of BOOT_LINES) {
+        await showLine(line, delay);
+        delay += Math.random() * 80 + 40;
+      }
+      statusEl.textContent = `${getTimestamp()} — portfolio-os login:`;
+      setTimeout(() => passInput.focus(), 100);
+    }
+
+    function doLogin() {
+      statusEl.className = 'success';
+      statusEl.textContent = 'Authenticating...';
+      loginBtn.disabled = true;
+      setTimeout(() => {
+        statusEl.textContent = 'Welcome back, namtn. Session restored.';
+        setTimeout(() => { window.location.href = 'index-linux.html'; }, 900);
+      }, 600);
+    }
+
+    loginBtn.addEventListener('click', doLogin);
+    passInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+    document.getElementById('shutdown-btn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    runBootSequence();
+  </script>
+</body>
+</html>

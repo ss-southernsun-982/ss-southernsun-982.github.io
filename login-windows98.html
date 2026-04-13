@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Windows 98 — Login</title>
+  <style>
+    :root {
+      --win-grey:       #c0c0c0;
+      --win-white:      #ffffff;
+      --win-dark-grey:  #808080;
+      --win-black:      #000000;
+      --win-blue-start: #000080;
+      --win-blue-end:   #1084d0;
+      --desktop-teal:   #008080;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tahoma', 'Arial', sans-serif;
+      font-size: 11px;
+      background: var(--desktop-teal);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    /* ── Win98 primitives ── */
+    .w-outset {
+      border: 2px solid;
+      border-top-color: var(--win-white);
+      border-left-color: var(--win-white);
+      border-right-color: var(--win-dark-grey);
+      border-bottom-color: var(--win-dark-grey);
+    }
+    .w-inset {
+      border: 2px solid;
+      border-top-color: var(--win-dark-grey);
+      border-left-color: var(--win-dark-grey);
+      border-right-color: var(--win-white);
+      border-bottom-color: var(--win-white);
+      background: var(--win-white);
+    }
+    .w-btn {
+      background: var(--win-grey);
+      border: 1px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-white), inset -1px -1px var(--win-dark-grey);
+      padding: 4px 14px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: inherit;
+      min-width: 75px;
+      text-align: center;
+    }
+    .w-btn:active {
+      box-shadow: inset 1px 1px var(--win-dark-grey), inset -1px -1px var(--win-white);
+      padding: 5px 13px 3px 15px;
+    }
+    .w-btn:focus { outline: 1px dotted var(--win-black); outline-offset: -3px; }
+
+    /* ── Login dialog box ── */
+    .dialog {
+      background: var(--win-grey);
+      border: 1px solid var(--win-black);
+      border-top-color: #dfdfdf;
+      border-left-color: #dfdfdf;
+      box-shadow: 1px 1px 0 var(--win-black);
+      padding: 3px;
+      width: 420px;
+    }
+
+    .dialog-titlebar {
+      background: linear-gradient(90deg, var(--win-blue-start), var(--win-blue-end));
+      padding: 3px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .dialog-title {
+      color: white;
+      font-weight: bold;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ctrl-btn {
+      width: 16px; height: 14px;
+      background: var(--win-grey);
+      border: 1px solid var(--win-black);
+      box-shadow: inset 1px 1px #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: bold;
+      cursor: pointer;
+    }
+    .ctrl-btn:active { box-shadow: inset 1px 1px var(--win-dark-grey); }
+
+    .dialog-body {
+      padding: 12px 14px 10px;
+    }
+
+    /* ── Windows logo banner ── */
+    .win-banner {
+      background: linear-gradient(135deg, #000080 0%, #0000aa 40%, #1084d0 100%);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .win-logo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+    .win-logo span {
+      display: block;
+    }
+    .win-logo span:nth-child(1) { background: #ff0000; }
+    .win-logo span:nth-child(2) { background: #00aa00; }
+    .win-logo span:nth-child(3) { background: #0000ff; }
+    .win-logo span:nth-child(4) { background: #ffcc00; }
+
+    .win-banner-text {
+      color: white;
+    }
+    .win-banner-text .win-name {
+      font-size: 18px;
+      font-weight: bold;
+      font-style: italic;
+      letter-spacing: -0.5px;
+    }
+    .win-banner-text .win-sub {
+      font-size: 10px;
+      color: #aad4ff;
+    }
+
+    /* ── Form fields ── */
+    .form-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .form-label {
+      width: 80px;
+      text-align: right;
+      flex-shrink: 0;
+      font-size: 11px;
+    }
+    .form-input {
+      flex: 1;
+      font-family: inherit;
+      font-size: 11px;
+      padding: 2px 4px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--win-dark-grey);
+      border-bottom: 1px solid var(--win-white);
+      margin: 10px 0;
+    }
+
+    /* ── Button row ── */
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    /* ── Status message ── */
+    #login-status {
+      font-size: 11px;
+      color: #000080;
+      min-height: 16px;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    /* ── Taskbar at bottom ── */
+    #taskbar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 28px;
+      background: var(--win-grey);
+      border-top: 2px solid var(--win-white);
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      gap: 4px;
+    }
+    #start-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      font-weight: bold;
+      font-size: 11px;
+      background: var(--win-grey);
+      border: 1px solid var(--win-black);
+      box-shadow: inset 1px 1px var(--win-white), inset -1px -1px var(--win-dark-grey);
+      cursor: pointer;
+      height: 22px;
+    }
+    .taskbar-clock {
+      margin-left: auto;
+      background: var(--win-grey);
+      border: 1px solid;
+      border-top-color: var(--win-dark-grey);
+      border-left-color: var(--win-dark-grey);
+      border-right-color: var(--win-white);
+      border-bottom-color: var(--win-white);
+      padding: 2px 8px;
+      font-size: 11px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login dialog -->
+  <div class="dialog w-outset">
+    <div class="dialog-titlebar">
+      <div class="dialog-title">
+        <span>🔒</span> Enter Network Password
+      </div>
+      <div class="ctrl-btn" onclick="shutdown()">✕</div>
+    </div>
+
+    <div class="dialog-body">
+      <!-- Windows banner -->
+      <div class="win-banner w-inset">
+        <div class="win-logo">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="win-banner-text">
+          <div class="win-name">Windows 98</div>
+          <div class="win-sub">Second Edition</div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-row">
+        <label class="form-label" for="username">User name:</label>
+        <input class="form-input w-inset" id="username" type="text" value="namtn" />
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="password">Password:</label>
+        <input class="form-input w-inset" id="password" type="password" placeholder="(press Enter or OK)" />
+      </div>
+
+      <hr class="divider" />
+
+      <div id="login-status"></div>
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button class="w-btn" id="btn-ok" onclick="doLogin()">OK</button>
+        <button class="w-btn" onclick="shutdown()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Taskbar -->
+  <div id="taskbar">
+    <button id="start-btn" onclick="shutdown()">
+      <span>🪟</span> Start
+    </button>
+    <div class="taskbar-clock" id="clock">--:--</div>
+  </div>
+
+  <script>
+    // ── Clock ──────────────────────────────
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent =
+        now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ── Focus on load ──────────────────────
+    window.addEventListener('load', () => {
+      document.getElementById('password').focus();
+    });
+
+    // ── Enter key on password ──────────────
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    // ── Login ──────────────────────────────
+    function doLogin() {
+      const statusEl = document.getElementById('login-status');
+      const btn = document.getElementById('btn-ok');
+      btn.disabled = true;
+      statusEl.textContent = 'Logging on to Windows...';
+
+      setTimeout(() => {
+        statusEl.textContent = 'Loading user profile...';
+        setTimeout(() => {
+          window.location.href = 'index-windows98.html';
+        }, 800);
+      }, 700);
+    }
+
+    // ── Cancel / Shutdown ──────────────────
+    function shutdown() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

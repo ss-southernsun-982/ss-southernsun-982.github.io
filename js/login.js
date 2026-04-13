@@ -93,8 +93,10 @@
     }, 600);
   }
 
-  // Power button opens login screen
-  btnPower.addEventListener('click', showLogin);
+  // Power button → return to boot OS selector
+  btnPower.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
 
   // Login button
   loginBtn.addEventListener('click', doLogin);
